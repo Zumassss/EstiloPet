@@ -7,44 +7,55 @@ HTML, CSS e JavaScript puros — sem build, sem dependências, sem servidor.
 
 ---
 
-## ⚠️ Antes de publicar: 4 coisas para preencher
+## ⚠️ Antes de publicar
 
-O site está pronto, mas com dados de exemplo. Troque estes quatro pontos:
+O WhatsApp **(27) 99892-3963 já está configurado** e todos os botões funcionam.
+Faltam estes pontos, todos marcados no código com o comentário `ATUALIZAR`:
 
-### 1. Número do WhatsApp — `assets/js/main.js` (linha 9)
+### 1. Foto da fachada — `assets/img/fachada.jpg`
 
-É **o item mais importante**: sem ele, nenhum botão do site funciona.
+A seção "Sobre" está pronta, mas com uma imagem provisória (o disco amarelo).
+Substitua **esses quatro arquivos** pela foto real da loja, em proporção 4:5:
+
+```
+assets/img/fachada.jpg      1000×1250
+assets/img/fachada@sm.jpg     480×600
+assets/img/fachada.webp     1000×1250
+assets/img/fachada@sm.webp    480×600
+```
+
+Se preferir, pode apagar as versões `.webp` e as `@sm` e deixar só o
+`fachada.jpg` — o navegador usa o que existir.
+
+### 2. Endereço e horários — `index.html`, no rodapé
+
+Procure `<!-- ATUALIZAR: endereço real da loja -->`. O link do Google Maps é
+montado sozinho a partir do endereço que estiver ali.
+
+### 3. Texto do "Sobre" — `index.html`, seção `#sobre`
+
+Escrevi com base no que dá para ver nas fotos (ar-condicionado, mesas com piso
+antiderrapante) e no jeito de trabalhar que você descreveu. Confirme com a
+equipe: "equipe fixa", "ambiente climatizado" e "transparência" precisam ser
+verdade.
+
+### 4. As três promessas do topo e as legendas do mural
+
+No topo: "Atendimento com hora marcada", "Sem espera em gaiola", "Produtos por
+tipo de pelo". No mural, as legendas estão com a raça — se os tutores
+autorizarem, troque pelos nomes reais dos pets.
+
+### Onde fica o número, se precisar trocar
+
+`assets/js/main.js`, no topo do arquivo:
 
 ```js
 const CONFIG = {
-  whatsapp: "5500000000000",          // ← 55 + DDD + número, só dígitos
-  whatsappVisivel: "(00) 00000-0000", // ← como aparece escrito na tela
+  whatsapp: "5527998923963",           // 55 + DDD + número, só dígitos
+  whatsappVisivel: "(27) 99892-3963",  // como aparece escrito na tela
   endereco: "EstiloPet Estética Animal"
 };
 ```
-
-Exemplo para (11) 98765-4321 → `"5511987654321"`.
-
-Mexendo só aqui, todos os botões do site passam a funcionar: o do menu, os dois
-do topo, o link de orçamento, o botão verde flutuante e o formulário.
-
-### 2. Endereço e horários — `index.html`, seção `#contato`
-
-Procure o comentário `<!-- ATUALIZAR: endereço, horários e telefone reais -->`.
-O link do Google Maps é montado sozinho a partir do endereço que estiver ali.
-
-### 3. As três promessas do topo — `index.html`, seção `.hero__facts`
-
-"Atendimento com hora marcada", "Sem espera em gaiola" e "Produtos por tipo de
-pelo". Confirme com a equipe se as três são verdade; se alguma não for, troque
-ou apague.
-
-### 4. Legendas do mural — `index.html`, seção `#mural`
-
-Estão com a raça e o serviço ("Lulu da Pomerânia", "Tosa na tesoura"). Deixei
-sem nome de pet de propósito: são clientes reais e os nomes seriam invenção
-minha. Se os tutores autorizarem, troque pelos nomes verdadeiros — fica bem
-mais caloroso.
 
 ---
 
@@ -107,10 +118,16 @@ moldura circular da foto principal e no card de contato. A ideia do site inteiro
 vem daí: a EstiloPet já trata cada cachorro como uma estrela de retrato, então o
 site trata as fotos do mesmo jeito.
 
-Animações: entrada em sequência no topo, revelação dos blocos conforme a rolagem,
-letreiro rolante como o de fachada de loja, anel tracejado girando na foto
-principal e microinterações nos cards. Tudo é desligado automaticamente para quem
-ativou "reduzir movimento" no sistema.
+**Botões.** Os botões "Agendar no WhatsApp" levam ao formulário e já deixam o
+cursor no primeiro campo. O botão verde flutuante vai direto para a conversa,
+com uma mensagem dizendo que a pessoa veio pelo site.
+
+**Animações.** Entrada em sequência no topo, revelação dos blocos conforme a
+rolagem (com desfoque suave que se dissolve), letreiro rolante como o de fachada
+de loja, anel tracejado girando na foto principal, barra fina de progresso da
+leitura sob o cabeçalho e um rastro de patinhas que aparecem uma a uma, discreto,
+no fim do "Como funciona" e ao fundo do rodapé. Tudo é desligado automaticamente
+para quem ativou "reduzir movimento" no sistema.
 
 ## Acessibilidade
 

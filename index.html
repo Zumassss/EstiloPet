@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EstiloPet — Estética Animal | Banho, tosa e hidratação com hora marcada</title>
-<meta name="description" content="EstiloPet Estética Animal: banho, tosa na tesoura, hidratação e cuidados finais com hora marcada. Agende pelo WhatsApp e busque seu pet cheiroso e pronto pra foto.">
+<meta name="description" content="EstiloPet Estética Animal: banho, tosa na tesoura, hidratação e cuidados finais com hora marcada. Monte seu agendamento e envie direto no WhatsApp.">
 <meta name="theme-color" content="#0F2A4A">
 <link rel="canonical" href="https://estilopet.com.br/">
 
@@ -26,7 +26,6 @@
 
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
-<!-- Paw symbol reused throughout the page -->
 <svg width="0" height="0" aria-hidden="true" style="position:absolute">
   <symbol id="paw" viewBox="0 0 100 100">
     <ellipse cx="28" cy="42" rx="9" ry="12" transform="rotate(-18 28 42)"/>
@@ -34,6 +33,15 @@
     <ellipse cx="60" cy="31" rx="9" ry="12.5"/>
     <ellipse cx="75" cy="42" rx="9" ry="12" transform="rotate(18 75 42)"/>
     <path d="M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z"/>
+  </symbol>
+  <symbol id="ico-pin" viewBox="0 0 24 24">
+    <path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.25 7.5 12.5 7.5 12.5s7.5-7.25 7.5-12.5A7.5 7.5 0 0 0 12 2Zm0 10.25a2.75 2.75 0 1 1 0-5.5 2.75 2.75 0 0 1 0 5.5Z"/>
+  </symbol>
+  <symbol id="ico-clock" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.6-3.9 2.25-1-1.73L11 11.4V6h2Z"/>
+  </symbol>
+  <symbol id="ico-insta" viewBox="0 0 24 24">
+    <path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07c-4.35.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/>
   </symbol>
 </svg>
 
@@ -52,10 +60,11 @@
       <a href="#servicos">Serviços</a>
       <a href="#mural">Mural</a>
       <a href="#como">Como funciona</a>
+      <a href="#sobre">Sobre</a>
       <a href="#contato">Contato</a>
     </nav>
 
-    <a class="btn btn--zap nav__cta" data-wa data-wa-msg="Olá, EstiloPet! Gostaria de agendar um horário para o meu pet.">
+    <a class="btn btn--zap nav__cta" href="#agendar">
       <svg class="ico-zap" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/></svg>
       Agendar no WhatsApp
     </a>
@@ -64,13 +73,15 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <div class="nav__progress" id="progresso" aria-hidden="true"></div>
 
   <div class="menu-mobile" id="menu-mobile" hidden>
     <a href="#servicos">Serviços</a>
     <a href="#mural">Mural</a>
     <a href="#como">Como funciona</a>
+    <a href="#sobre">Sobre</a>
     <a href="#contato">Contato</a>
-    <a class="btn btn--zap" data-wa data-wa-msg="Olá, EstiloPet! Gostaria de agendar um horário para o meu pet.">Agendar no WhatsApp</a>
+    <a class="btn btn--zap" href="#agendar">Agendar no WhatsApp</a>
   </div>
 </header>
 
@@ -101,7 +112,7 @@
       </p>
 
       <div class="hero__actions load" style="--d:380ms">
-        <a class="btn btn--zap btn--lg" data-wa data-wa-msg="Olá, EstiloPet! Gostaria de agendar um horário para o meu pet.">
+        <a class="btn btn--zap btn--lg" href="#agendar">
           <svg class="ico-zap" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/></svg>
           Agendar no WhatsApp
         </a>
@@ -138,7 +149,7 @@
   </div>
 </section>
 
-<!-- ══ FAIXA DE SERVIÇOS (letreiro) ══ -->
+<!-- ══ LETREIRO ══ -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
     <span class="marquee__set">
@@ -211,7 +222,7 @@
 
     <p class="sec__foot reveal">
       Preço varia conforme porte, tipo de pelo e estado do pelo.
-      <a data-wa data-wa-msg="Olá, EstiloPet! Gostaria de saber o valor do banho e tosa para o meu pet.">Peça seu orçamento no WhatsApp</a>.
+      <a data-wa data-wa-msg="Olá, EstiloPet! Vim pelo site e gostaria de saber o valor do banho e tosa para o meu pet.">Peça seu orçamento no WhatsApp</a>.
     </p>
   </div>
 </section>
@@ -230,7 +241,7 @@
 
     <ul class="mural">
       <!-- ATUALIZAR: troque as legendas pelos nomes reais dos pets, se o tutor autorizar -->
-      <li class="star reveal">
+      <li class="star reveal reveal--img">
         <figure>
           <picture>
             <source type="image/webp" srcset="assets/img/pet-1@sm.webp 480w, assets/img/pet-1.webp 800w" sizes="(max-width:640px) 86vw, (max-width:1000px) 44vw, 23vw">
@@ -242,7 +253,7 @@
           <figcaption><span>Banho e escovação</span><b>Lulu da Pomerânia</b></figcaption>
         </figure>
       </li>
-      <li class="star reveal">
+      <li class="star reveal reveal--img">
         <figure>
           <picture>
             <source type="image/webp" srcset="assets/img/pet-2@sm.webp 480w, assets/img/pet-2.webp 800w" sizes="(max-width:640px) 86vw, (max-width:1000px) 44vw, 23vw">
@@ -254,7 +265,7 @@
           <figcaption><span>Tosa na tesoura</span><b>Poodle</b></figcaption>
         </figure>
       </li>
-      <li class="star reveal">
+      <li class="star reveal reveal--img">
         <figure>
           <picture>
             <source type="image/webp" srcset="assets/img/pet-3@sm.webp 480w, assets/img/pet-3.webp 800w" sizes="(max-width:640px) 86vw, (max-width:1000px) 44vw, 23vw">
@@ -266,7 +277,7 @@
           <figcaption><span>Banho e tosa higiênica</span><b>Shih-tzu</b></figcaption>
         </figure>
       </li>
-      <li class="star reveal">
+      <li class="star reveal reveal--img">
         <figure>
           <picture>
             <source type="image/webp" srcset="assets/img/pet-4@sm.webp 480w, assets/img/pet-4.webp 800w" sizes="(max-width:640px) 86vw, (max-width:1000px) 44vw, 23vw">
@@ -312,23 +323,86 @@
         <p>Chamamos assim que ficar pronto e mandamos a foto do resultado. Ela pode ser a próxima do mural.</p>
       </li>
     </ol>
+
+    <!-- rastro de patinhas: aparecem uma a uma na rolagem -->
+    <div class="trilha reveal" aria-hidden="true">
+      <svg style="--i:0"><use href="#paw"/></svg>
+      <svg style="--i:1"><use href="#paw"/></svg>
+      <svg style="--i:2"><use href="#paw"/></svg>
+      <svg style="--i:3"><use href="#paw"/></svg>
+      <svg style="--i:4"><use href="#paw"/></svg>
+      <svg style="--i:5"><use href="#paw"/></svg>
+      <svg style="--i:6"><use href="#paw"/></svg>
+      <svg style="--i:7"><use href="#paw"/></svg>
+      <svg style="--i:8"><use href="#paw"/></svg>
+      <svg style="--i:9"><use href="#paw"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOBRE ══ -->
+<section class="sec sec--navy sobre" id="sobre">
+  <div class="wrap sobre__inner">
+    <div class="sobre__media reveal reveal--img">
+      <div class="sobre__frame">
+        <!-- ATUALIZAR: troque por assets/img/fachada.jpg com a foto real da loja -->
+        <picture>
+          <source type="image/webp" srcset="assets/img/fachada@sm.webp 480w, assets/img/fachada.webp 1000w" sizes="(max-width:1000px) 88vw, 460px">
+          <img src="assets/img/fachada.jpg" width="1000" height="1250" loading="lazy" decoding="async"
+               sizes="(max-width:1000px) 88vw, 460px"
+               srcset="assets/img/fachada@sm.jpg 480w, assets/img/fachada.jpg 1000w"
+               alt="Fachada da EstiloPet Estética Animal, com o letreiro amarelo sobre o painel azul-marinho.">
+        </picture>
+      </div>
+      <span class="sobre__selo">
+        <svg><use href="#paw"/></svg>
+        Nossa casa
+      </span>
+    </div>
+
+    <div class="sobre__copy">
+      <p class="eyebrow reveal"><span class="eyebrow__dot"></span>Sobre nós</p>
+      <h2 class="sec__title reveal">Um salão feito para o pet ficar à vontade</h2>
+
+      <!-- ATUALIZAR: confirme os detalhes deste texto com a equipe -->
+      <p class="sobre__texto reveal">
+        A EstiloPet é uma estética animal com espaço próprio, montada pensando em quem
+        passa a manhã inteira aqui dentro. Ambiente climatizado, mesas com piso
+        antiderrapante e atendimento com hora marcada — porque cachorro esperando é
+        cachorro estressado, e pet estressado não sai bonito.
+      </p>
+      <p class="sobre__texto reveal">
+        Quem cuida do seu pet é sempre a mesma equipe. Isso muda tudo: a gente aprende
+        que um tem medo de secador, que o outro só deixa cortar a unha da pata esquerda
+        no fim, que aquele ali precisa de pausa no meio da tosa. É esse tipo de detalhe
+        que faz o pet voltar tranquilo na próxima vez.
+      </p>
+
+      <ul class="sobre__lista">
+        <li class="reveal"><b>Equipe fixa</b><span>Seu pet é atendido sempre pelas mesmas mãos.</span></li>
+        <li class="reveal"><b>Ambiente climatizado</b><span>Conforto do banho até a secagem.</span></li>
+        <li class="reveal"><b>Transparência</b><span>Nada fora do combinado sem avisar você antes.</span></li>
+      </ul>
+
+      <a class="btn btn--yellow btn--lg reveal" href="#agendar">Agendar um horário</a>
+    </div>
   </div>
 </section>
 
 <!-- ══ AGENDAMENTO ══ -->
-<section class="sec sec--navy sec--form" id="agendar">
+<section class="sec sec--light sec--form" id="agendar">
   <div class="wrap booking">
-    <div class="booking__intro reveal">
-      <p class="eyebrow"><span class="eyebrow__dot"></span>Agendamento</p>
-      <h2 class="sec__title">Monte seu pedido e mande no WhatsApp</h2>
-      <p class="sec__lead">
-        Preencha os campos abaixo. A gente monta a mensagem pronta e abre a conversa — você
-        só confere e envia. Nada é salvo neste site.
+    <div class="booking__intro">
+      <p class="eyebrow eyebrow--dark reveal"><span class="eyebrow__dot"></span>Agendamento</p>
+      <h2 class="sec__title reveal">Monte seu pedido e mande no WhatsApp</h2>
+      <p class="sec__lead reveal">
+        Preencha os campos ao lado. A gente monta a mensagem pronta e abre a conversa —
+        você só confere e envia. Nada é salvo neste site.
       </p>
 
-      <div class="preview" aria-live="polite">
+      <div class="preview reveal" aria-live="polite">
         <p class="preview__label">Mensagem que será enviada</p>
-        <pre class="preview__text" id="preview">Preencha o formulário ao lado para ver a mensagem.</pre>
+        <pre class="preview__text" id="preview">Preencha o formulário para ver a mensagem.</pre>
       </div>
     </div>
 
@@ -372,13 +446,21 @@
           <label for="dia">Dia preferido</label>
           <input id="dia" name="dia" type="date">
         </div>
-        <fieldset class="field">
-          <legend>Período</legend>
-          <div class="chips chips--tight" role="radiogroup" aria-label="Período preferido">
-            <label class="chip"><input type="radio" name="periodo" value="Manhã" checked><span>Manhã</span></label>
-            <label class="chip"><input type="radio" name="periodo" value="Tarde"><span>Tarde</span></label>
-          </div>
-        </fieldset>
+        <div class="field">
+          <label for="hora">Horário desejado</label>
+          <select id="hora" name="hora">
+            <option value="">Sem preferência</option>
+            <option>08:00</option><option>08:30</option>
+            <option>09:00</option><option>09:30</option>
+            <option>10:00</option><option>10:30</option>
+            <option>11:00</option><option>11:30</option>
+            <option>13:00</option><option>13:30</option>
+            <option>14:00</option><option>14:30</option>
+            <option>15:00</option><option>15:30</option>
+            <option>16:00</option><option>16:30</option>
+            <option>17:00</option>
+          </select>
+        </div>
       </div>
 
       <div class="field">
@@ -395,77 +477,89 @@
   </div>
 </section>
 
-<!-- ══ CONTATO ══ -->
-<section class="sec sec--light" id="contato">
-  <div class="wrap">
-    <header class="sec__head reveal">
-      <p class="eyebrow eyebrow--dark"><span class="eyebrow__dot"></span>Onde estamos</p>
-      <h2 class="sec__title">Venha tomar um café enquanto espera</h2>
-    </header>
-
-    <div class="contato">
-      <!-- ATUALIZAR: endereço, horários e telefone reais -->
-      <ul class="contato__list reveal">
-        <li>
-          <span class="contato__k">Endereço</span>
-          <span class="contato__v" id="endereco">Rua Example, 000 — Bairro, Cidade/UF</span>
-          <a class="contato__link" id="link-mapa" target="_blank" rel="noopener">Abrir no Google Maps</a>
-        </li>
-        <li>
-          <span class="contato__k">Horário</span>
-          <span class="contato__v">Segunda a sexta, 8h às 18h<br>Sábado, 8h às 14h<br>Domingo, fechado</span>
-        </li>
-        <li>
-          <span class="contato__k">WhatsApp</span>
-          <a class="contato__v contato__v--link" data-wa data-wa-text data-wa-msg="Olá, EstiloPet!"></a>
-        </li>
-        <li>
-          <span class="contato__k">Instagram</span>
-          <a class="contato__v contato__v--link" href="https://instagram.com/estilopet.es" target="_blank" rel="noopener">@estilopet.es</a>
-        </li>
-      </ul>
-
-      <div class="contato__card reveal">
-        <div class="contato__disc">
-          <picture>
-            <source type="image/webp" srcset="assets/img/pet-3-sq@sm.webp 400w, assets/img/pet-3-sq.webp 720w" sizes="(max-width:720px) 60vw, 300px">
-            <img src="assets/img/pet-3-sq.jpg" width="720" height="720" loading="lazy" decoding="async"
-                 sizes="(max-width:720px) 60vw, 300px"
-                 srcset="assets/img/pet-3-sq@sm.jpg 400w, assets/img/pet-3-sq.jpg 720w" alt="">
-          </picture>
-        </div>
-        <p class="contato__quote">Traga o seu. A parede amarela está esperando.</p>
-        <a class="btn btn--yellow" data-wa data-wa-msg="Olá, EstiloPet! Gostaria de agendar um horário para o meu pet.">Falar no WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 </main>
 
-<footer class="footer">
-  <div class="wrap footer__inner">
-    <a class="logo logo--footer" href="#topo">
-      <span class="logo__mark">
-        <span class="logo__word">ESTIL</span>
-        <span class="logo__disc"><svg class="logo__paw"><use href="#paw"/></svg></span>
-        <span class="logo__word">PET</span>
-      </span>
-      <span class="logo__sub">Estética Animal</span>
-    </a>
-    <nav class="footer__nav" aria-label="Rodapé">
-      <a href="#servicos">Serviços</a>
-      <a href="#mural">Mural</a>
-      <a href="#como">Como funciona</a>
-      <a href="#agendar">Agendar</a>
-      <a href="https://instagram.com/estilopet.es" target="_blank" rel="noopener">Instagram</a>
-    </nav>
-    <p class="footer__legal">© <span id="ano"></span> EstiloPet Estética Animal. Todos os direitos reservados.</p>
+<!-- ══ CONTATO + RODAPÉ ══ -->
+<footer class="rodape" id="contato">
+  <div class="rodape__patas" aria-hidden="true">
+    <svg style="--i:0"><use href="#paw"/></svg>
+    <svg style="--i:1"><use href="#paw"/></svg>
+    <svg style="--i:2"><use href="#paw"/></svg>
+    <svg style="--i:3"><use href="#paw"/></svg>
+    <svg style="--i:4"><use href="#paw"/></svg>
+    <svg style="--i:5"><use href="#paw"/></svg>
+  </div>
+
+  <div class="wrap">
+    <div class="rodape__topo reveal">
+      <div>
+        <p class="eyebrow"><span class="eyebrow__dot"></span>Fale com a gente</p>
+        <h2 class="rodape__titulo">Traga o seu.<br>A parede amarela está esperando.</h2>
+      </div>
+      <a class="btn btn--zap btn--lg" data-wa data-wa-msg="Olá, EstiloPet! Vim pelo site de vocês e gostaria de agendar um horário para o meu pet 🐾">
+        <svg class="ico-zap" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/></svg>
+        Chamar no WhatsApp
+      </a>
+    </div>
+
+    <ul class="resumo">
+      <li class="resumo__item reveal">
+        <span class="resumo__ico">
+          <svg class="ico-zap" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/></svg>
+        </span>
+        <span class="resumo__k">WhatsApp</span>
+        <a class="resumo__v resumo__v--link" data-wa data-wa-text data-wa-msg="Olá, EstiloPet! Vim pelo site de vocês 🐾"></a>
+        <span class="resumo__extra">Respondemos em horário comercial</span>
+      </li>
+
+      <li class="resumo__item reveal">
+        <span class="resumo__ico"><svg viewBox="0 0 24 24"><use href="#ico-pin"/></svg></span>
+        <span class="resumo__k">Endereço</span>
+        <!-- ATUALIZAR: endereço real da loja -->
+        <span class="resumo__v" id="endereco">Rua Example, 000 — Bairro<br>Cidade/ES</span>
+        <a class="resumo__extra resumo__extra--link" id="link-mapa" target="_blank" rel="noopener">Abrir no Google Maps →</a>
+      </li>
+
+      <li class="resumo__item reveal">
+        <span class="resumo__ico"><svg viewBox="0 0 24 24"><use href="#ico-clock"/></svg></span>
+        <span class="resumo__k">Horário</span>
+        <!-- ATUALIZAR: horários reais -->
+        <span class="resumo__v">Seg a sex, 8h–18h<br>Sábado, 8h–14h</span>
+        <span class="resumo__extra">Domingo fechado</span>
+      </li>
+
+      <li class="resumo__item reveal">
+        <span class="resumo__ico"><svg viewBox="0 0 24 24"><use href="#ico-insta"/></svg></span>
+        <span class="resumo__k">Instagram</span>
+        <a class="resumo__v resumo__v--link" href="https://instagram.com/estilopet.es" target="_blank" rel="noopener">@estilopet.es</a>
+        <span class="resumo__extra">O mural completo está lá</span>
+      </li>
+    </ul>
+
+    <div class="rodape__base">
+      <a class="logo logo--footer" href="#topo">
+        <span class="logo__mark">
+          <span class="logo__word">ESTIL</span>
+          <span class="logo__disc"><svg class="logo__paw"><use href="#paw"/></svg></span>
+          <span class="logo__word">PET</span>
+        </span>
+        <span class="logo__sub">Estética Animal</span>
+      </a>
+      <nav class="rodape__nav" aria-label="Rodapé">
+        <a href="#servicos">Serviços</a>
+        <a href="#mural">Mural</a>
+        <a href="#como">Como funciona</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#agendar">Agendar</a>
+      </nav>
+      <p class="rodape__legal">© <span id="ano"></span> EstiloPet Estética Animal</p>
+    </div>
   </div>
 </footer>
 
-<a class="fab" data-wa data-wa-msg="Olá, EstiloPet! Gostaria de agendar um horário para o meu pet." aria-label="Falar no WhatsApp">
+<a class="fab" data-wa data-wa-msg="Olá, EstiloPet! Vim pelo site de vocês e gostaria de saber mais sobre banho e tosa para o meu pet 🐾" aria-label="Falar no WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/></svg>
+  <span class="fab__balao">Fale com a gente</span>
 </a>
 
 <script src="assets/js/main.js"></script>

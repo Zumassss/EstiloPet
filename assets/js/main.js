@@ -3,17 +3,16 @@
    ═══════════════════════════════════════════════════════════ */
 
 /* ───────────────────────────────────────────────────────────
-   ⚠️  DADOS DO NEGÓCIO — é só aqui que você precisa mexer.
+   DADOS DO NEGÓCIO — é só aqui que você precisa mexer.
    ─────────────────────────────────────────────────────────── */
 const CONFIG = {
   // Número do WhatsApp com código do país e DDD, só dígitos.
-  // Ex.: (11) 98765-4321  →  "5511987654321"
-  whatsapp: "5500000000000",
+  whatsapp: "5527998923963",
 
-  // Como o número aparece escrito na seção de contato.
-  whatsappVisivel: "(00) 00000-0000",
+  // Como o número aparece escrito na tela.
+  whatsappVisivel: "(27) 99892-3963",
 
-  // Endereço usado no link do Google Maps.
+  // Usado no link do Google Maps quando o endereço não estiver preenchido.
   endereco: "EstiloPet Estética Animal"
 };
 /* ─────────────────────────────────────────────────────────── */
@@ -26,9 +25,9 @@ const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 const waLink = (msg) =>
   `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 
-/* ── links de WhatsApp ─────────────────────────────────── */
+/* ── links diretos de WhatsApp ─────────────────────────── */
 $$("[data-wa]").forEach((el) => {
-  el.href = waLink(el.dataset.waMsg || "Olá, EstiloPet!");
+  el.href = waLink(el.dataset.waMsg || "Olá, EstiloPet! Vim pelo site de vocês 🐾");
   el.target = "_blank";
   el.rel = "noopener";
   if (el.hasAttribute("data-wa-text")) el.textContent = CONFIG.whatsappVisivel;
@@ -36,7 +35,7 @@ $$("[data-wa]").forEach((el) => {
 
 const mapa = $("#link-mapa");
 if (mapa) {
-  const endereco = $("#endereco")?.textContent.trim() || CONFIG.endereco;
+  const endereco = $("#endereco")?.innerText.trim().replace(/\s+/g, " ") || CONFIG.endereco;
   mapa.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
 }
 
@@ -68,16 +67,21 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* ── barra fixa + botão flutuante ──────────────────────── */
+/* ── barra fixa, progresso e botão flutuante ───────────── */
 const nav = $("#nav");
 const fab = $(".fab");
+const progresso = $("#progresso");
 
 const aoRolar = () => {
   const y = window.scrollY;
   nav.classList.toggle("is-stuck", y > 20);
   fab.classList.toggle("is-on", y > 620);
+
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  progresso.style.transform = `scaleX(${total > 0 ? Math.min(y / total, 1) : 0})`;
 };
 addEventListener("scroll", aoRolar, { passive: true });
+addEventListener("resize", aoRolar, { passive: true });
 aoRolar();
 
 /* ── revelação no scroll, com escadinha por grupo ──────── */
@@ -85,8 +89,11 @@ const reveals = $$(".reveal");
 reveals.forEach((el) => {
   const irmaos = [...el.parentElement.children].filter((c) => c.classList.contains("reveal"));
   const i = irmaos.indexOf(el);
-  if (irmaos.length > 1 && i > 0) el.style.setProperty("--d", `${Math.min(i, 5) * 90}ms`);
+  if (irmaos.length > 1 && i > 0) el.style.setProperty("--d", `${Math.min(i, 5) * 95}ms`);
 });
+
+// o rodapé não é .reveal, mas precisa saber quando entrou (patinhas de fundo)
+const observados = [...reveals, ...$$(".rodape")];
 
 if ("IntersectionObserver" in window) {
   const obs = new IntersectionObserver(
@@ -97,12 +104,23 @@ if ("IntersectionObserver" in window) {
         obs.unobserve(e.target);
       });
     },
-    { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
   );
-  reveals.forEach((el) => obs.observe(el));
+  observados.forEach((el) => obs.observe(el));
 } else {
-  reveals.forEach((el) => el.classList.add("is-in"));
+  observados.forEach((el) => el.classList.add("is-in"));
 }
+
+/* ── botões "Agendar" levam ao formulário ──────────────── */
+$$('a[href="#agendar"]').forEach((a) => {
+  a.addEventListener("click", () => {
+    // depois da rolagem, deixa o cursor pronto no primeiro campo
+    setTimeout(() => {
+      const campo = $("#tutor");
+      if (campo) campo.focus({ preventScroll: true });
+    }, 700);
+  });
+});
 
 /* ── agendamento ───────────────────────────────────────── */
 const form = $("#form-agendamento");
@@ -112,10 +130,9 @@ const inputDia = $("#dia");
 // não deixa escolher um dia que já passou
 if (inputDia) {
   const hoje = new Date();
-  const iso = new Date(hoje.getTime() - hoje.getTimezoneOffset() * 6e4)
+  inputDia.min = new Date(hoje.getTime() - hoje.getTimezoneOffset() * 6e4)
     .toISOString()
     .slice(0, 10);
-  inputDia.min = iso;
 }
 
 const dataBR = (iso) => {
@@ -132,28 +149,29 @@ const lerFormulario = () => {
     porte: dados.get("porte") || "",
     servicos: dados.getAll("servico"),
     dia: dataBR(dados.get("dia")),
-    periodo: dados.get("periodo") || "",
+    hora: dados.get("hora") || "",
     obs: (dados.get("obs") || "").trim()
   };
 };
 
 const montarMensagem = (d) => {
-  const linhas = ["Olá, EstiloPet! Quero agendar um horário 🐾", ""];
+  const linhas = ["Olá, EstiloPet! Vim pelo site e quero agendar um horário 🐾", ""];
   if (d.tutor) linhas.push(`Tutor: ${d.tutor}`);
   if (d.pet) linhas.push(`Pet: ${d.pet}${d.porte ? ` (porte ${d.porte.toLowerCase()})` : ""}`);
   if (d.servicos.length) linhas.push(`Serviços: ${d.servicos.join(", ")}`);
-  if (d.dia || d.periodo) {
-    linhas.push(`Quando: ${[d.dia, d.periodo && d.periodo.toLowerCase()].filter(Boolean).join(" — ")}`);
+  if (d.dia || d.hora) {
+    const quando = [d.dia, d.hora && `às ${d.hora}`].filter(Boolean).join(" ");
+    linhas.push(`Quando: ${quando}`);
   }
   if (d.obs) linhas.push(`Observações: ${d.obs}`);
   return linhas.join("\n");
 };
 
-const VAZIO = "Preencha o formulário ao lado para ver a mensagem.";
+const VAZIO = "Preencha o formulário para ver a mensagem.";
 
 const atualizarPreview = () => {
   const d = lerFormulario();
-  const preenchido = d.tutor || d.pet || d.servicos.length || d.dia || d.obs;
+  const preenchido = d.tutor || d.pet || d.servicos.length || d.dia || d.hora || d.obs;
   preview.textContent = preenchido ? montarMensagem(d) : VAZIO;
 };
 
