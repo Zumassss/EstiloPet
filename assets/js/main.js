@@ -72,16 +72,32 @@ const nav = $("#nav");
 const fab = $(".fab");
 const progresso = $("#progresso");
 
+// medir a página a cada evento de scroll trava a rolagem: mede uma vez e guarda
+let alturaRolavel = 0;
+const medir = () => {
+  alturaRolavel = document.documentElement.scrollHeight - innerHeight;
+};
+
+let agendado = false;
 const aoRolar = () => {
-  const y = window.scrollY;
+  const y = scrollY;
   nav.classList.toggle("is-stuck", y > 20);
   fab.classList.toggle("is-on", y > 620);
-
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  progresso.style.transform = `scaleX(${total > 0 ? Math.min(y / total, 1) : 0})`;
+  progresso.style.transform =
+    `scaleX(${alturaRolavel > 0 ? Math.min(y / alturaRolavel, 1) : 0})`;
+  agendado = false;
 };
-addEventListener("scroll", aoRolar, { passive: true });
-addEventListener("resize", aoRolar, { passive: true });
+
+// um quadro por vez, no ritmo da tela
+addEventListener("scroll", () => {
+  if (agendado) return;
+  agendado = true;
+  requestAnimationFrame(aoRolar);
+}, { passive: true });
+
+addEventListener("resize", () => { medir(); aoRolar(); }, { passive: true });
+addEventListener("load", medir);
+medir();
 aoRolar();
 
 /* ── revelação no scroll, com escadinha por grupo ──────── */
@@ -96,29 +112,97 @@ reveals.forEach((el) => {
 const observados = [...reveals, ...$$(".rodape")];
 
 if ("IntersectionObserver" in window) {
+  // avisa o navegador um pouco antes, para ele preparar a camada
+  const prepara = new IntersectionObserver(
+    (entradas) => {
+      entradas.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("vai-animar");
+          prepara.unobserve(e.target);
+        }
+      });
+    },
+    { rootMargin: "300px 0px 300px 0px" }
+  );
+
   const obs = new IntersectionObserver(
     (entradas) => {
       entradas.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add("is-in");
         obs.unobserve(e.target);
+        // solta a camada assim que a animação termina
+        setTimeout(() => e.target.classList.remove("vai-animar"), 1400);
       });
     },
     { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
   );
-  observados.forEach((el) => obs.observe(el));
+
+  observados.forEach((el) => { prepara.observe(el); obs.observe(el); });
 } else {
   observados.forEach((el) => el.classList.add("is-in"));
 }
 
-/* ── botões "Agendar" levam ao formulário ──────────────── */
-$$('a[href="#agendar"]').forEach((a) => {
-  a.addEventListener("click", () => {
-    // depois da rolagem, deixa o cursor pronto no primeiro campo
-    setTimeout(() => {
-      const campo = $("#tutor");
-      if (campo) campo.focus({ preventScroll: true });
-    }, 700);
+/* ── rolagem suave própria ─────────────────────────────
+   O scroll-behavior nativo varia muito de navegador para navegador.
+   Aqui a curva é sempre a mesma e já desconta a altura do cabeçalho.  */
+const querMenosMovimento = matchMedia("(prefers-reduced-motion: reduce)");
+let rolagemEmAndamento = null;
+
+const suavizar = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+function rolarAte(destino, aoTerminar) {
+  const alvo = Math.max(
+    0,
+    Math.min(destino, document.documentElement.scrollHeight - innerHeight)
+  );
+
+  if (querMenosMovimento.matches) {
+    scrollTo({ top: alvo, behavior: "instant" });
+    aoTerminar?.();
+    return;
+  }
+
+  cancelAnimationFrame(rolagemEmAndamento);
+  const inicio = scrollY;
+  const distancia = alvo - inicio;
+  if (Math.abs(distancia) < 2) return aoTerminar?.();
+
+  // percursos longos levam um pouco mais de tempo, mas com teto
+  const duracao = Math.min(1100, 420 + Math.abs(distancia) * 0.35);
+  const t0 = performance.now();
+
+  const passo = (agora) => {
+    const t = Math.min((agora - t0) / duracao, 1);
+    scrollTo({ top: inicio + distancia * suavizar(t), behavior: "instant" });
+    if (t < 1) rolagemEmAndamento = requestAnimationFrame(passo);
+    else aoTerminar?.();
+  };
+  rolagemEmAndamento = requestAnimationFrame(passo);
+}
+
+// intercepta todo link de âncora da página
+document.addEventListener("click", (e) => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+
+  const id = link.getAttribute("href");
+  if (id === "#" || id.length < 2) return;
+
+  const destino = document.querySelector(id);
+  if (!destino) return;
+
+  e.preventDefault();
+  const recuo = nav.offsetHeight + 18;
+  const y = destino.getBoundingClientRect().top + scrollY - recuo;
+
+  rolarAte(y, () => {
+    history.replaceState(null, "", id);
+    // ao chegar no formulário, deixa o cursor pronto no primeiro campo
+    if (id === "#agendar") $("#tutor")?.focus({ preventScroll: true });
+    // devolve o foco ao teclado sem roubar a rolagem
+    if (!destino.hasAttribute("tabindex")) destino.setAttribute("tabindex", "-1");
+    destino.focus({ preventScroll: true });
   });
 });
 
@@ -146,6 +230,7 @@ const lerFormulario = () => {
   return {
     tutor: (dados.get("tutor") || "").trim(),
     pet: (dados.get("pet") || "").trim(),
+    raca: (dados.get("raca") || "").trim(),
     porte: dados.get("porte") || "",
     servicos: dados.getAll("servico"),
     dia: dataBR(dados.get("dia")),
@@ -157,7 +242,10 @@ const lerFormulario = () => {
 const montarMensagem = (d) => {
   const linhas = ["Olá, EstiloPet! Vim pelo site e quero agendar um horário 🐾", ""];
   if (d.tutor) linhas.push(`Tutor: ${d.tutor}`);
-  if (d.pet) linhas.push(`Pet: ${d.pet}${d.porte ? ` (porte ${d.porte.toLowerCase()})` : ""}`);
+  if (d.pet) {
+    const detalhes = [d.raca, d.porte && `porte ${d.porte.toLowerCase()}`].filter(Boolean);
+    linhas.push(`Pet: ${d.pet}${detalhes.length ? ` (${detalhes.join(", ")})` : ""}`);
+  }
   if (d.servicos.length) linhas.push(`Serviços: ${d.servicos.join(", ")}`);
   if (d.dia || d.hora) {
     const quando = [d.dia, d.hora && `às ${d.hora}`].filter(Boolean).join(" ");
@@ -171,7 +259,7 @@ const VAZIO = "Preencha o formulário para ver a mensagem.";
 
 const atualizarPreview = () => {
   const d = lerFormulario();
-  const preenchido = d.tutor || d.pet || d.servicos.length || d.dia || d.hora || d.obs;
+  const preenchido = d.tutor || d.pet || d.raca || d.servicos.length || d.dia || d.hora || d.obs;
   preview.textContent = preenchido ? montarMensagem(d) : VAZIO;
 };
 

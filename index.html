@@ -413,11 +413,29 @@
         <p class="err" data-err="tutor"></p>
       </div>
 
-      <div class="field">
-        <label for="pet">Nome do pet <span class="req">*</span></label>
-        <input id="pet" name="pet" type="text" required placeholder="Ex.: Mel">
-        <p class="err" data-err="pet"></p>
+      <div class="field-row">
+        <div class="field">
+          <label for="pet">Nome do pet <span class="req">*</span></label>
+          <input id="pet" name="pet" type="text" required placeholder="Ex.: Mel">
+          <p class="err" data-err="pet"></p>
+        </div>
+        <div class="field">
+          <label for="raca">Raça</label>
+          <input id="raca" name="raca" type="text" list="racas" placeholder="Ex.: Shih-tzu">
+        </div>
       </div>
+
+      <datalist id="racas">
+        <option>Sem raça definida</option><option>Shih-tzu</option><option>Poodle</option>
+        <option>Lulu da Pomerânia</option><option>Yorkshire</option><option>Maltês</option>
+        <option>Lhasa Apso</option><option>Pinscher</option><option>Pug</option>
+        <option>Bulldog Francês</option><option>Golden Retriever</option><option>Labrador</option>
+        <option>Border Collie</option><option>Beagle</option><option>Schnauzer</option>
+        <option>Chihuahua</option><option>Rottweiler</option><option>Pastor Alemão</option>
+        <option>Dachshund</option><option>Cocker Spaniel</option><option>Husky Siberiano</option>
+        <option>Akita</option><option>Boxer</option><option>Pit Bull</option>
+        <option>Gato</option>
+      </datalist>
 
       <fieldset class="field">
         <legend>Porte</legend>

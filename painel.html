@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel — EstiloPet</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#071A2E">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23FFC20E'/><g fill='%230F2A4A'><ellipse cx='28' cy='42' rx='9' ry='12' transform='rotate(-18 28 42)'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12' transform='rotate(18 75 42)'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>">
+
+<link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/painel.css">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <symbol id="paw" viewBox="0 0 100 100">
+    <ellipse cx="28" cy="42" rx="9" ry="12" transform="rotate(-18 28 42)"/>
+    <ellipse cx="43" cy="31" rx="9" ry="12.5"/>
+    <ellipse cx="60" cy="31" rx="9" ry="12.5"/>
+    <ellipse cx="75" cy="42" rx="9" ry="12" transform="rotate(18 75 42)"/>
+    <path d="M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z"/>
+  </symbol>
+</svg>
+
+<!-- ══ TRAVA DE ACESSO ══ -->
+<div class="trava" id="trava" hidden>
+  <form class="trava__caixa" id="form-trava">
+    <span class="trava__logo">
+      <span class="logo__word">ESTIL</span>
+      <span class="logo__disc"><svg class="logo__paw"><use href="#paw"/></svg></span>
+      <span class="logo__word">PET</span>
+    </span>
+    <h1 class="trava__titulo">Painel interno</h1>
+    <label class="trava__label" for="senha">Senha de acesso</label>
+    <input class="trava__input" id="senha" type="password" autocomplete="current-password" required>
+    <p class="trava__erro" id="trava-erro" role="alert"></p>
+    <button class="btn btn--amarelo" type="submit">Entrar</button>
+    <p class="trava__aviso">
+      Esta trava só evita acesso casual. Ela não é segurança de verdade — quem tiver
+      o endereço da página consegue ver os dados. Para proteger mesmo, use a proteção
+      por senha da sua hospedagem.
+    </p>
+  </form>
+</div>
+
+<!-- ══ PAINEL ══ -->
+<div class="app" id="app" hidden>
+
+  <header class="topo">
+    <div class="topo__esq">
+      <a class="marca" href="index.html" title="Voltar ao site">
+        <span class="logo__word">ESTIL</span>
+        <span class="logo__disc"><svg class="logo__paw"><use href="#paw"/></svg></span>
+        <span class="logo__word">PET</span>
+      </a>
+      <span class="selo">Painel interno</span>
+    </div>
+
+    <div class="topo__dir">
+      <div class="periodo" role="group" aria-label="Período">
+        <button class="periodo__b" data-dias="7">7 dias</button>
+        <button class="periodo__b is-on" data-dias="30">30 dias</button>
+        <button class="periodo__b" data-dias="90">90 dias</button>
+        <button class="periodo__b" data-dias="365">1 ano</button>
+        <button class="periodo__b" data-dias="0">Tudo</button>
+      </div>
+      <button class="btn btn--amarelo" id="btn-novo">
+        <svg viewBox="0 0 24 24" class="ico"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>
+        Novo atendimento
+      </button>
+    </div>
+  </header>
+
+  <main class="conteudo">
+
+    <!-- estado vazio -->
+    <section class="vazio" id="vazio" hidden>
+      <span class="vazio__disco"><svg><use href="#paw"/></svg></span>
+      <h2>Nenhum atendimento registrado ainda</h2>
+      <p>
+        Registre os atendimentos aqui e o painel monta os números sozinho:
+        raças mais atendidas, porte, serviços, horários de pico e faturamento.
+      </p>
+      <div class="vazio__acoes">
+        <button class="btn btn--amarelo" id="btn-novo-2">Registrar o primeiro</button>
+        <button class="btn btn--linha" id="btn-exemplo">Carregar dados de exemplo</button>
+      </div>
+      <p class="vazio__nota">
+        Os dados de exemplo servem só para você ver o painel funcionando. Dá para
+        apagar tudo com um clique depois.
+      </p>
+    </section>
+
+    <div id="painel" hidden>
+
+      <!-- ── indicadores ── -->
+      <section class="kpis" aria-label="Indicadores do período">
+        <article class="kpi">
+          <span class="kpi__k">Atendimentos</span>
+          <strong class="kpi__v" id="kpi-atend">—</strong>
+          <span class="kpi__d" id="kpi-atend-d"></span>
+        </article>
+        <article class="kpi">
+          <span class="kpi__k">Faturamento</span>
+          <strong class="kpi__v" id="kpi-receita">—</strong>
+          <span class="kpi__d" id="kpi-receita-d"></span>
+        </article>
+        <article class="kpi">
+          <span class="kpi__k">Ticket médio</span>
+          <strong class="kpi__v" id="kpi-ticket">—</strong>
+          <span class="kpi__d" id="kpi-ticket-d"></span>
+        </article>
+        <article class="kpi">
+          <span class="kpi__k">Pets diferentes</span>
+          <strong class="kpi__v" id="kpi-pets">—</strong>
+          <span class="kpi__d" id="kpi-pets-d"></span>
+        </article>
+        <article class="kpi">
+          <span class="kpi__k">Taxa de retorno</span>
+          <strong class="kpi__v" id="kpi-retorno">—</strong>
+          <span class="kpi__d kpi__d--calmo">pets que voltaram no período</span>
+        </article>
+      </section>
+
+      <!-- ── movimento + porte ── -->
+      <section class="grade grade--2-1">
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Movimento</h2>
+              <p class="cartao__sub">Atendimentos por dia</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-movimento"></div>
+        </article>
+
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Porte</h2>
+              <p class="cartao__sub">Distribuição dos pets atendidos</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-porte"></div>
+        </article>
+      </section>
+
+      <!-- ── raças + serviços ── -->
+      <section class="grade grade--1-1">
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Raças mais atendidas</h2>
+              <p class="cartao__sub">As dez primeiras do período</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-racas"></div>
+        </article>
+
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Serviços mais pedidos</h2>
+              <p class="cartao__sub">Um atendimento pode ter mais de um</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-servicos"></div>
+        </article>
+      </section>
+
+      <!-- ── horários + dias ── -->
+      <section class="grade grade--1-1">
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Horários de pico</h2>
+              <p class="cartao__sub">Quando a loja enche</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-horas"></div>
+        </article>
+
+        <article class="cartao">
+          <header class="cartao__topo">
+            <div>
+              <h2 class="cartao__titulo">Dias da semana</h2>
+              <p class="cartao__sub">Movimento por dia</p>
+            </div>
+          </header>
+          <div class="viz" id="viz-semana"></div>
+        </article>
+      </section>
+
+      <!-- ── raça × porte ── -->
+      <article class="cartao">
+        <header class="cartao__topo">
+          <div>
+            <h2 class="cartao__titulo">Raça por porte</h2>
+            <p class="cartao__sub">Quantos pets de cada porte, em cada raça</p>
+          </div>
+          <div class="legenda" id="legenda-porte"></div>
+        </header>
+        <div class="viz" id="viz-raca-porte"></div>
+      </article>
+
+      <!-- ── tabela ── -->
+      <article class="cartao">
+        <header class="cartao__topo cartao__topo--tabela">
+          <div>
+            <h2 class="cartao__titulo">Atendimentos</h2>
+            <p class="cartao__sub" id="tabela-contagem"></p>
+          </div>
+          <div class="ferramentas">
+            <label class="busca">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.4-5.38A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>
+              <input type="search" id="busca" placeholder="Buscar pet, tutor ou raça…" aria-label="Buscar atendimentos">
+            </label>
+            <button class="btn btn--linha" id="btn-csv">Exportar CSV</button>
+            <button class="btn btn--linha" id="btn-backup">Backup</button>
+            <button class="btn btn--linha" id="btn-importar">Importar</button>
+            <input type="file" id="arquivo" accept="application/json" hidden>
+          </div>
+        </header>
+
+        <div class="tabela-rolagem">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th><button class="ordenar" data-col="data">Data</button></th>
+                <th><button class="ordenar" data-col="pet">Pet</button></th>
+                <th><button class="ordenar" data-col="raca">Raça</button></th>
+                <th><button class="ordenar" data-col="porte">Porte</button></th>
+                <th>Serviços</th>
+                <th><button class="ordenar" data-col="tutor">Tutor</button></th>
+                <th class="num"><button class="ordenar" data-col="valor">Valor</button></th>
+                <th><span class="sr">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody id="corpo-tabela"></tbody>
+          </table>
+        </div>
+
+        <div class="paginacao" id="paginacao"></div>
+      </article>
+
+      <p class="rodape-nota">
+        Os dados ficam salvos neste navegador, neste aparelho. Faça um
+        <button class="link" id="btn-backup-2">backup</button> de vez em quando —
+        limpar os dados do navegador apaga tudo.
+        <button class="link link--perigo" id="btn-limpar">Apagar todos os dados</button>
+      </p>
+
+    </div>
+  </main>
+</div>
+
+<!-- ══ FORMULÁRIO DE ATENDIMENTO ══ -->
+<dialog class="modal" id="modal">
+  <form class="modal__form" id="form-atendimento" method="dialog" novalidate>
+    <header class="modal__topo">
+      <h2 id="modal-titulo">Novo atendimento</h2>
+      <button class="modal__x" type="button" id="fechar-modal" aria-label="Fechar">
+        <svg viewBox="0 0 24 24"><path d="m12 10.59 5.3-5.3 1.41 1.42-5.3 5.29 5.3 5.3-1.42 1.41-5.29-5.3-5.3 5.3-1.41-1.42 5.3-5.29-5.3-5.3L6.71 5.3z"/></svg>
+      </button>
+    </header>
+
+    <input type="hidden" id="f-id">
+
+    <div class="modal__grade">
+      <div class="campo">
+        <label for="f-data">Data <span class="req">*</span></label>
+        <input id="f-data" type="date" required>
+      </div>
+      <div class="campo">
+        <label for="f-hora">Horário</label>
+        <input id="f-hora" type="time" step="900">
+      </div>
+      <div class="campo campo--largo">
+        <label for="f-pet">Nome do pet <span class="req">*</span></label>
+        <input id="f-pet" type="text" required placeholder="Ex.: Mel">
+      </div>
+      <div class="campo">
+        <label for="f-raca">Raça</label>
+        <input id="f-raca" type="text" list="lista-racas" placeholder="Ex.: Shih-tzu">
+      </div>
+      <div class="campo">
+        <label for="f-porte">Porte</label>
+        <select id="f-porte">
+          <option>Pequeno</option><option>Médio</option><option>Grande</option>
+        </select>
+      </div>
+      <div class="campo campo--largo">
+        <label for="f-tutor">Tutor</label>
+        <input id="f-tutor" type="text" placeholder="Ex.: Maria">
+      </div>
+      <div class="campo">
+        <label for="f-valor">Valor (R$)</label>
+        <input id="f-valor" type="number" min="0" step="0.01" placeholder="0,00">
+      </div>
+
+      <fieldset class="campo campo--largo">
+        <legend>Serviços</legend>
+        <div class="fichas" id="fichas-servicos"></div>
+      </fieldset>
+
+      <div class="campo campo--largo">
+        <label for="f-obs">Observações</label>
+        <textarea id="f-obs" rows="2" placeholder="Opcional"></textarea>
+      </div>
+    </div>
+
+    <p class="modal__erro" id="modal-erro" role="alert"></p>
+
+    <footer class="modal__rodape">
+      <button class="btn btn--linha" type="button" id="cancelar">Cancelar</button>
+      <button class="btn btn--amarelo" type="submit" id="salvar">Salvar</button>
+    </footer>
+  </form>
+</dialog>
+
+<datalist id="lista-racas"></datalist>
+
+<div class="dica" id="dica" role="status" aria-live="polite" hidden></div>
+<div class="aviso" id="aviso" role="status" aria-live="polite" hidden></div>
+
+<script src="assets/js/painel.js"></script>
+</body>
+</html>
