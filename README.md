@@ -9,46 +9,31 @@ HTML, CSS e JavaScript puros — sem build, sem dependências, sem servidor.
 
 ## ⚠️ Antes de publicar
 
-O WhatsApp **(27) 99892-3963 já está configurado** e todos os botões funcionam.
-Faltam estes pontos, todos marcados no código com o comentário `ATUALIZAR`:
+O WhatsApp **(27) 99892-3963**, o endereço e a foto da fachada já estão no lugar.
+Sobraram três pontos, todos marcados no código com o comentário `ATUALIZAR`:
 
-### 1. Foto da fachada — `assets/img/fachada.jpg`
+### 1. Horários de funcionamento — `index.html`, no rodapé
 
-A seção "Sobre" está pronta, mas com uma imagem provisória (o disco amarelo).
-Substitua **esses quatro arquivos** pela foto real da loja, em proporção 4:5:
+O Google só mostra "fecha às 18:00". Está no ar como *seg a sex 8h–18h, sábado
+8h–14h, domingo fechado* — confirme se é isso mesmo.
 
-```
-assets/img/fachada.jpg      1000×1250
-assets/img/fachada@sm.jpg     480×600
-assets/img/fachada.webp     1000×1250
-assets/img/fachada@sm.webp    480×600
-```
+### 2. Texto do "Sobre" — `index.html`, seção `#sobre`
 
-Se preferir, pode apagar as versões `.webp` e as `@sm` e deixar só o
-`fachada.jpg` — o navegador usa o que existir.
+Escrevi com base no que dá para ver nas fotos e nas avaliações do Google.
+Confirme: "equipe fixa", "ambiente climatizado" e "transparência".
 
-### 2. Endereço e horários — `index.html`, no rodapé
+### 3. Legendas do mural — `index.html`, seção `#mural`
 
-Procure `<!-- ATUALIZAR: endereço real da loja -->`. O link do Google Maps é
-montado sozinho a partir do endereço que estiver ali.
+Estão com a raça. Se os tutores autorizarem, troque pelos nomes reais dos pets.
 
-### 3. Texto do "Sobre" — `index.html`, seção `#sobre`
+### Foto da fachada
 
-Escrevi com base no que dá para ver nas fotos (ar-condicionado, mesas com piso
-antiderrapante) e no jeito de trabalhar que você descreveu. Confirme com a
-equipe: "equipe fixa", "ambiente climatizado" e "transparência" precisam ser
-verdade.
+A imagem enviada tem 352×526, então ela é ampliada para caber no espaço e fica um
+pouco macia em telas grandes. Se você tiver o arquivo original da foto, é só
+substituir `assets/img/fachada.jpg` e `fachada@sm.jpg` (proporção 4:5) que ela
+fica nítida.
 
-### 4. As três promessas do topo e as legendas do mural
-
-No topo: "Atendimento com hora marcada", "Sem espera em gaiola", "Produtos por
-tipo de pelo". No mural, as legendas estão com a raça — se os tutores
-autorizarem, troque pelos nomes reais dos pets.
-
-### Onde ficam os dados do negócio
-
-Tudo num arquivo só: **`assets/js/config.js`** — número do WhatsApp, endereço,
-senha do painel, lista de serviços, tabela de preços e a URL da planilha.
+---
 
 ---
 
@@ -87,7 +72,8 @@ assets/
   js/main.js                   interações do site
   js/painel.js                 métricas e gráficos do painel
   fonts/                       Archivo e Hanken Grotesk (self-hosted)
-  img/                         fotos de clientes, otimizadas
+  img/                         fotos de clientes e da loja, otimizadas
+  video/                       o loop do topo, em duas resoluções
 ```
 
 ### Sobre as fotos
@@ -228,6 +214,20 @@ site trata as fotos do mesmo jeito.
 cursor no primeiro campo. O botão verde flutuante vai direto para a conversa,
 com uma mensagem dizendo que a pessoa veio pelo site.
 
+**O topo.** Um loop de 10 segundos de um banho de verdade, em quadro vertical.
+O arquivo original tinha 28 MB em 4K; ele é exibido no máximo a 340px de largura,
+então foi reduzido a 640×1138 e ficou em 891 KB. O corte tem um cruzamento de um
+segundo entre o fim e o começo, para o loop emendar sem salto.
+
+Nada é baixado pelo HTML: o `<video>` nasce sem fonte, mostrando só o pôster, e o
+JavaScript decide se vale a pena carregar. Não carrega para quem ativou economia
+de dados, está em rede 2G ou pediu menos movimento — nesses casos o pôster já
+conta a história. No celular vem o arquivo de 385 KB. Fora da tela, o vídeo pausa.
+
+**O disco girando** saiu do topo e foi para o "Como funciona", que era a seção
+mais fraca do site: os três passos viraram uma lista numerada à esquerda, com o
+retrato circular à direita.
+
 **Rolagem.** A roda do mouse move um alvo e a página persegue esse alvo quadro a
 quadro, o que dá o deslize contínuo em vez do salto do navegador. Os cliques no
 menu usam a mesma curva e já descontam a altura do cabeçalho. Em telas de toque
@@ -239,6 +239,11 @@ de loja, anel tracejado girando na foto principal, barra fina de progresso da
 leitura sob o cabeçalho e um rastro de patinhas que aparecem uma a uma, discreto,
 no fim do "Como funciona" e ao fundo do rodapé. Tudo é desligado automaticamente
 para quem ativou "reduzir movimento" no sistema.
+
+## Prova social
+
+A nota 5,0 e as três avaliações da seção "O que dizem" são reais e públicas, do
+perfil da loja no Google. Nenhuma foi escrita para o site.
 
 ## Acessibilidade
 

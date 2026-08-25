@@ -61,6 +61,7 @@
       <a href="#mural">Mural</a>
       <a href="#como">Como funciona</a>
       <a href="#sobre">Sobre</a>
+      <a href="#depoimentos">Avaliações</a>
       <a href="#contato">Contato</a>
     </nav>
 
@@ -80,6 +81,7 @@
     <a href="#mural">Mural</a>
     <a href="#como">Como funciona</a>
     <a href="#sobre">Sobre</a>
+    <a href="#depoimentos">Avaliações</a>
     <a href="#contato">Contato</a>
     <a class="btn btn--zap" href="#agendar">Agendar no WhatsApp</a>
   </div>
@@ -119,31 +121,33 @@
         <a class="btn btn--ghost btn--lg" href="#mural">Ver o mural</a>
       </div>
 
-      <!-- ATUALIZAR: confirme estas três promessas com a equipe antes de publicar -->
-      <ul class="hero__facts load" style="--d:460ms">
-        <li>Atendimento com hora marcada</li>
-        <li>Sem espera em gaiola</li>
-        <li>Produtos por tipo de pelo</li>
-      </ul>
+      <div class="hero__prova load" style="--d:460ms">
+        <a class="nota" href="https://www.google.com/maps/search/?api=1&query=EstiloPet+Est%C3%A9tica+Animal+Praia+das+Gaivotas+Vila+Velha"
+           target="_blank" rel="noopener">
+          <span class="nota__estrelas" aria-hidden="true">★★★★★</span>
+          <span class="nota__txt"><b>5,0</b> em 59 avaliações no Google</span>
+        </a>
+        <ul class="hero__facts">
+          <li>Atendimento com hora marcada</li>
+          <li>Porta dupla na entrada, sem risco de fuga</li>
+        </ul>
+      </div>
     </div>
 
-    <div class="hero__stage load load--disc" style="--d:220ms">
-      <div class="disc">
-        <svg class="disc__ring" viewBox="0 0 200 200" aria-hidden="true">
-          <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="1.5"
-                  stroke-dasharray="3 9" stroke-linecap="round"/>
-        </svg>
-        <div class="disc__plate"></div>
-        <picture>
-          <source type="image/webp" srcset="assets/img/pet-1-sq@sm.webp 400w, assets/img/pet-1-sq.webp 720w"
-                  sizes="(max-width:720px) 78vw, 440px">
-          <img class="disc__photo" src="assets/img/pet-1-sq.jpg" width="720" height="720"
-               sizes="(max-width:720px) 78vw, 440px"
-               srcset="assets/img/pet-1-sq@sm.jpg 400w, assets/img/pet-1-sq.jpg 720w"
-               alt="Lulu da Pomerânia de pelo creme, escovado e com gravata, sentado na mesa de banho da EstiloPet."
-               fetchpriority="high" decoding="async">
-        </picture>
-        <span class="disc__tag">Recém-saído do banho</span>
+    <div class="hero__palco load load--video" style="--d:220ms">
+      <div class="filme">
+        <div class="filme__moldura">
+          <video class="filme__video" id="filme"
+                 poster="assets/img/banho-poster.jpg"
+                 muted loop playsinline preload="none"
+                 aria-label="Yorkshire tomando banho na EstiloPet"
+                 width="640" height="1138"></video>
+          <span class="filme__brilho" aria-hidden="true"></span>
+        </div>
+        <span class="filme__selo">
+          <span class="filme__pulso" aria-hidden="true"></span>
+          Aqui dentro, agora há pouco
+        </span>
       </div>
     </div>
   </div>
@@ -300,31 +304,58 @@
 
 <!-- ══ COMO FUNCIONA ══ -->
 <section class="sec sec--light" id="como">
-  <div class="wrap">
-    <header class="sec__head reveal">
-      <p class="eyebrow eyebrow--dark"><span class="eyebrow__dot"></span>Como funciona</p>
-      <h2 class="sec__title">Do “oi” ao pet pronto</h2>
-    </header>
+  <div class="wrap como">
+    <div class="como__texto">
+      <header class="sec__head reveal">
+        <p class="eyebrow eyebrow--dark"><span class="eyebrow__dot"></span>Como funciona</p>
+        <h2 class="sec__title">Do “oi” ao pet pronto</h2>
+      </header>
 
-    <ol class="steps">
-      <li class="step reveal">
-        <span class="step__num">1</span>
-        <h3 class="step__title">Você agenda</h3>
-        <p>Manda o nome do pet, o porte e o dia que prefere. A gente confirma o horário na mesma conversa.</p>
-      </li>
-      <li class="step reveal">
-        <span class="step__num">2</span>
-        <h3 class="step__title">A gente cuida</h3>
-        <p>Seu pet é atendido na hora marcada. Se aparecer algo fora do combinado — um nó difícil, uma irritação na pele — a gente avisa antes de fazer.</p>
-      </li>
-      <li class="step reveal">
-        <span class="step__num">3</span>
-        <h3 class="step__title">Você busca a estrela</h3>
-        <p>Chamamos assim que ficar pronto e mandamos a foto do resultado. Ela pode ser a próxima do mural.</p>
-      </li>
-    </ol>
+      <ol class="passos">
+        <li class="passo reveal">
+          <span class="passo__num">1</span>
+          <div>
+            <h3 class="passo__titulo">Você agenda</h3>
+            <p>Manda o nome do pet, o porte e o dia que prefere. A gente confirma o horário na mesma conversa.</p>
+          </div>
+        </li>
+        <li class="passo reveal">
+          <span class="passo__num">2</span>
+          <div>
+            <h3 class="passo__titulo">A gente cuida</h3>
+            <p>Seu pet é atendido na hora marcada. Se aparecer algo fora do combinado — um nó difícil, uma irritação na pele — a gente avisa antes de fazer.</p>
+          </div>
+        </li>
+        <li class="passo reveal">
+          <span class="passo__num">3</span>
+          <div>
+            <h3 class="passo__titulo">Você busca a estrela</h3>
+            <p>Chamamos assim que ficar pronto e mandamos a foto do resultado. Ela pode ser a próxima do mural.</p>
+          </div>
+        </li>
+      </ol>
 
-    <!-- rastro de patinhas: aparecem uma a uma na rolagem -->
+    </div>
+
+    <div class="como__palco reveal">
+      <div class="disc">
+        <svg class="disc__ring" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="1.5"
+                  stroke-dasharray="3 9" stroke-linecap="round"/>
+        </svg>
+        <div class="disc__plate"></div>
+        <picture>
+          <source type="image/webp" srcset="assets/img/pet-1-sq@sm.webp 400w, assets/img/pet-1-sq.webp 720w"
+                  sizes="(max-width:900px) 70vw, 380px">
+          <img class="disc__photo" src="assets/img/pet-1-sq.jpg" width="720" height="720" loading="lazy" decoding="async"
+               sizes="(max-width:900px) 70vw, 380px"
+               srcset="assets/img/pet-1-sq@sm.jpg 400w, assets/img/pet-1-sq.jpg 720w"
+               alt="Lulu da Pomerânia creme, escovado e com gravata, na parede amarela da EstiloPet.">
+        </picture>
+        <span class="disc__tag">Pronto pra buscar</span>
+      </div>
+    </div>
+
     <div class="trilha reveal" aria-hidden="true">
       <svg style="--i:0"><use href="#paw"/></svg>
       <svg style="--i:1"><use href="#paw"/></svg>
@@ -334,8 +365,6 @@
       <svg style="--i:5"><use href="#paw"/></svg>
       <svg style="--i:6"><use href="#paw"/></svg>
       <svg style="--i:7"><use href="#paw"/></svg>
-      <svg style="--i:8"><use href="#paw"/></svg>
-      <svg style="--i:9"><use href="#paw"/></svg>
     </div>
   </div>
 </section>
@@ -345,18 +374,17 @@
   <div class="wrap sobre__inner">
     <div class="sobre__media reveal reveal--img">
       <div class="sobre__frame">
-        <!-- ATUALIZAR: troque por assets/img/fachada.jpg com a foto real da loja -->
         <picture>
-          <source type="image/webp" srcset="assets/img/fachada@sm.webp 480w, assets/img/fachada.webp 1000w" sizes="(max-width:1000px) 88vw, 460px">
-          <img src="assets/img/fachada.jpg" width="1000" height="1250" loading="lazy" decoding="async"
-               sizes="(max-width:1000px) 88vw, 460px"
-               srcset="assets/img/fachada@sm.jpg 480w, assets/img/fachada.jpg 1000w"
-               alt="Fachada da EstiloPet Estética Animal, com o letreiro amarelo sobre o painel azul-marinho.">
+          <source type="image/webp" srcset="assets/img/fachada@sm.webp 400w, assets/img/fachada.webp 704w" sizes="(max-width:1000px) 88vw, 440px">
+          <img src="assets/img/fachada.jpg" width="704" height="880" loading="lazy" decoding="async"
+               sizes="(max-width:1000px) 88vw, 440px"
+               srcset="assets/img/fachada@sm.jpg 400w, assets/img/fachada.jpg 704w"
+               alt="Fachada da EstiloPet: letreiro amarelo sobre painel azul-marinho, com a equipe na entrada da loja.">
         </picture>
       </div>
       <span class="sobre__selo">
         <svg><use href="#paw"/></svg>
-        Nossa casa
+        Praia das Gaivotas, Vila Velha
       </span>
     </div>
 
@@ -386,6 +414,54 @@
 
       <a class="btn btn--yellow btn--lg reveal" href="#agendar">Agendar um horário</a>
     </div>
+  </div>
+</section>
+
+<!-- ══ DEPOIMENTOS ══ -->
+<section class="sec sec--light" id="depoimentos">
+  <div class="wrap">
+    <header class="sec__head sec__head--centro reveal">
+      <p class="eyebrow eyebrow--dark"><span class="eyebrow__dot"></span>O que dizem</p>
+      <h2 class="sec__title">Nota 5,0 em 59 avaliações</h2>
+      <p class="sec__lead">
+        Avaliações públicas de clientes no Google. Nenhuma delas foi escrita por nós.
+      </p>
+    </header>
+
+    <ul class="depos">
+      <li class="depo reveal">
+        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+        <blockquote>
+          Atendimento muito bom, prestativo. Meu cão é um York e tem bastante medo de
+          petshop e veterinários. Ao buscá-lo, ele estava todo feliz e já ambientado com
+          o local. Tem uma porta de vidro antes da porta de entrada da rua, impedindo
+          que o cão fuja.
+        </blockquote>
+        <p class="depo__quem"><b>Caroline S</b><span>Local Guide no Google</span></p>
+      </li>
+      <li class="depo reveal">
+        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+        <blockquote>
+          Levei meu cachorro pela primeira vez e, como tutora, ficamos com medo do novo.
+          Mas me surpreendi: amei todo o trabalho e os profissionais, super atenciosos.
+          Meu cachorro não queria voltar pra casa. Super indico, virei cliente.
+        </blockquote>
+        <p class="depo__quem"><b>Juliana Almeida</b><span>Avaliação no Google</span></p>
+      </li>
+      <li class="depo reveal">
+        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+        <blockquote>
+          Merecidas as 5 estrelas. Um trabalho de excelência, um local seguro e o mais
+          importante: o carinho com nossos pets. Gostei demais.
+        </blockquote>
+        <p class="depo__quem"><b>Andressa Gaigher Peruchi</b><span>Avaliação no Google</span></p>
+      </li>
+    </ul>
+
+    <p class="sec__foot sec__foot--centro reveal">
+      <a href="https://www.google.com/maps/search/?api=1&query=EstiloPet+Est%C3%A9tica+Animal+Praia+das+Gaivotas+Vila+Velha"
+         target="_blank" rel="noopener">Ver as 59 avaliações no Google</a>
+    </p>
   </div>
 </section>
 
@@ -533,8 +609,7 @@
       <li class="resumo__item reveal">
         <span class="resumo__ico"><svg viewBox="0 0 24 24"><use href="#ico-pin"/></svg></span>
         <span class="resumo__k">Endereço</span>
-        <!-- ATUALIZAR: endereço real da loja -->
-        <span class="resumo__v" id="endereco">Rua Example, 000 — Bairro<br>Cidade/ES</span>
+        <span class="resumo__v" id="endereco">Av. Cel. Pedro Maia de Carvalho, 805 — Lj 4<br>Praia das Gaivotas, Vila Velha — ES</span>
         <a class="resumo__extra resumo__extra--link" id="link-mapa" target="_blank" rel="noopener">Abrir no Google Maps →</a>
       </li>
 
