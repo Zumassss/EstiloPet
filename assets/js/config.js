@@ -13,6 +13,11 @@ window.CONFIG = {
   /* ── Endereço (usado no link do Google Maps) ───────── */
   endereco: "EstiloPet Estética Animal",
 
+  /* ── Link de atendimento ───────────────────────────────
+     A página /agendar é o formulário em forma de quiz, feita
+     para mandar por WhatsApp ou pôr na bio do Instagram. Ela
+     usa os mesmos serviços e o mesmo número daqui.          */
+
   /* ── Painel ────────────────────────────────────────────
      Senha do /painel.html. Deixe "" para entrar direto.
      Atenção: isto é só um obstáculo simples, NÃO é

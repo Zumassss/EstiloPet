@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agendar na EstiloPet</title>
+<meta name="description" content="Monte o atendimento do seu pet em poucos toques e mande direto no WhatsApp da EstiloPet.">
+<meta name="theme-color" content="#0B2038">
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23FFC20E'/><g fill='%230F2A4A'><ellipse cx='28' cy='42' rx='9' ry='12' transform='rotate(-18 28 42)'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12' transform='rotate(18 75 42)'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>">
+
+<link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/agendar.css">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <symbol id="paw" viewBox="0 0 100 100">
+    <ellipse cx="28" cy="42" rx="9" ry="12" transform="rotate(-18 28 42)"/>
+    <ellipse cx="43" cy="31" rx="9" ry="12.5"/>
+    <ellipse cx="60" cy="31" rx="9" ry="12.5"/>
+    <ellipse cx="75" cy="42" rx="9" ry="12" transform="rotate(18 75 42)"/>
+    <path d="M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z"/>
+  </symbol>
+  <symbol id="ico-banho" viewBox="0 0 24 24">
+    <path d="M4 11V6.2A2.2 2.2 0 0 1 6.2 4c1.02 0 1.87.7 2.12 1.64A2.6 2.6 0 0 1 10 5.2V4h2v1.2a2.6 2.6 0 0 1 1.68.44A2.2 2.2 0 0 1 15.8 4 2.2 2.2 0 0 1 18 6.2V11h2v2H2v-2Z"/>
+    <path d="M5 15.6a1 1 0 1 1 2 0v1.9a1 1 0 1 1-2 0Zm3.2 2.1a1 1 0 1 1 2 0v1.9a1 1 0 1 1-2 0Zm3.2-2.1a1 1 0 1 1 2 0v1.9a1 1 0 1 1-2 0Zm3.2 2.1a1 1 0 1 1 2 0v1.9a1 1 0 1 1-2 0Z"/>
+  </symbol>
+  <symbol id="ico-tesoura" viewBox="0 0 24 24">
+    <path d="M9.6 12 4.3 4.9l1.6-1.2 5.4 7.2 5.4-7.2 1.6 1.2L13 12l2.1 2.8a3.4 3.4 0 1 1-1.6 1.2L12 14l-1.5 2a3.4 3.4 0 1 1-1.6-1.2Zm-2.2 4.2a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm9.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/>
+  </symbol>
+  <symbol id="ico-maquina" viewBox="0 0 24 24">
+    <path d="M7.6 2.4h1.5v3.2H7.6Zm2.65 0h1.5v3.2h-1.5Zm2.65 0h1.5v3.2h-1.5Zm2.65 0h1.5v3.2h-1.5Z"/>
+    <rect x="7" y="6" width="10" height="10.6" rx="1.4"/>
+    <path d="M11.25 16.6h1.5v1.9c0 1.15.9 2 2.05 2H19v1.5h-4.2c-2 0-3.55-1.5-3.55-3.5Z"/>
+  </symbol>
+  <symbol id="ico-gota" viewBox="0 0 24 24">
+    <path d="M12 2.6c3.6 4.2 6.4 7.6 6.4 11.1A6.4 6.4 0 0 1 5.6 13.7c0-3.5 2.8-6.9 6.4-11.1Zm-2.5 9.1a1 1 0 0 0-2 0 4.5 4.5 0 0 0 4.5 4.5 1 1 0 0 0 0-2 2.5 2.5 0 0 1-2.5-2.5Z"/>
+  </symbol>
+  <symbol id="ico-escova" viewBox="0 0 24 24">
+    <path d="M5.4 3h13.2a1.6 1.6 0 0 1 1.6 1.6v4.8a1.6 1.6 0 0 1-1.6 1.6H5.4a1.6 1.6 0 0 1-1.6-1.6V4.6A1.6 1.6 0 0 1 5.4 3Z"/>
+    <path d="M6.2 12.4h1.9v4.3a1 1 0 1 1-1.9 0Zm3.9 0H12v6.3a1 1 0 1 1-1.9 0Zm3.8 0h1.9v4.3a1 1 0 1 1-1.9 0Zm3.9 0h1.9v6.3a1 1 0 1 1-1.9 0Z"/>
+  </symbol>
+  <symbol id="ico-laco" viewBox="0 0 24 24">
+    <path d="M12 9.4c.5-.7 1.1-1.4 1.9-2 1-.9 2.3-1.4 3.6-1.4 1.9 0 3.3 1.3 3.3 3.1v4.8c0 1.8-1.4 3.1-3.3 3.1-1.3 0-2.6-.5-3.6-1.4-.8-.6-1.4-1.3-1.9-2-.5.7-1.1 1.4-1.9 2-1 .9-2.3 1.4-3.6 1.4-1.9 0-3.3-1.3-3.3-3.1V9.1C3.2 7.3 4.6 6 6.5 6c1.3 0 2.6.5 3.6 1.4.8.6 1.4 1.3 1.9 2Zm0 4.7a2.1 2.1 0 1 0 0-4.2 2.1 2.1 0 0 0 0 4.2Z"/>
+  </symbol>
+  <symbol id="ico-zap" viewBox="0 0 24 24">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.17c-.25.69-1.44 1.31-1.99 1.36-.53.05-1.02.24-3.44-.72-2.9-1.14-4.75-4.1-4.9-4.29-.14-.19-1.17-1.56-1.17-2.97s.74-2.11 1-2.4c.26-.29.57-.36.76-.36l.55.01c.17 0 .41-.07.64.49.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.33 1.44.29.15.46.12.63-.07.17-.19.73-.85.93-1.15.19-.29.39-.24.65-.14.26.09 1.66.78 1.95.93.29.14.48.21.55.33.07.12.07.7-.18 1.39Z"/>
+  </symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24">
+    <path d="M9.6 16.2 5.4 12l-1.4 1.4 5.6 5.6L20.4 8.2 19 6.8Z"/>
+  </symbol>
+  <symbol id="ico-volta" viewBox="0 0 24 24">
+    <path d="M14.7 5.3 8 12l6.7 6.7 1.4-1.4-5.3-5.3 5.3-5.3z"/>
+  </symbol>
+</svg>
+
+<!-- luzes ao fundo -->
+<div class="fundo" aria-hidden="true">
+  <span class="bolha bolha--1"></span>
+  <span class="bolha bolha--2"></span>
+  <span class="bolha bolha--3"></span>
+</div>
+
+<header class="topo">
+  <a class="marca" href="index.html">
+    <span class="marca__nome">
+      <span>ESTIL</span>
+      <span class="marca__disco"><svg><use href="#paw"/></svg></span>
+      <span>PET</span>
+    </span>
+    <span class="marca__sub">Estética Animal</span>
+  </a>
+
+  <div class="passo-conta" id="passo-conta" hidden>
+    <span id="passo-num">1</span><i>de</i><span id="passo-total">6</span>
+  </div>
+</header>
+
+<div class="trilho" aria-hidden="true"><span class="trilho__cheio" id="trilho"></span></div>
+
+<main class="palco" id="palco">
+
+  <!-- ══ boas-vindas ══ -->
+  <section class="tela is-on" data-tela="inicio">
+    <div class="tela__meio">
+      <span class="selo-topo"><span class="selo-topo__pulso"></span>Atendimento rápido</span>
+      <h1 class="titulao">Vamos deixar seu pet <em>lindo</em>?</h1>
+      <p class="linha-fina">
+        Seis perguntas rápidas e a gente já abre a conversa no WhatsApp com tudo escrito.
+        Leva menos de um minuto.
+      </p>
+
+      <div class="atalho" id="atalho" hidden>
+        <p class="atalho__label">Da última vez</p>
+        <button type="button" class="atalho__btn" id="atalho-btn">
+          <span class="atalho__pet" id="atalho-pet">Mel</span>
+          <span class="atalho__det" id="atalho-det">Shih-tzu · Banho, Hidratação</span>
+          <span class="atalho__acao">Repetir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 5.3 16 12l-6.7 6.7-1.4-1.4 5.3-5.3-5.3-5.3z"/></svg></span>
+        </button>
+      </div>
+
+      <button type="button" class="btn btn--grande" data-vai="pet">
+        Começar
+        <svg class="btn__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 5.3 16 12l-6.7 6.7-1.4-1.4 5.3-5.3-5.3-5.3z"/></svg>
+      </button>
+
+      <p class="rodapinho">
+        Já é cliente? Salve este link no seu celular: dá para agendar por aqui sempre.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 1. pet ══ -->
+  <section class="tela" data-tela="pet" data-passo="1">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 1</p>
+      <h2 class="pergunta">Qual o nome do seu pet?</h2>
+      <div class="campo-solto">
+        <input type="text" id="pet" placeholder="Ex.: Mel" autocomplete="off"
+               enterkeyhint="next" maxlength="40" aria-label="Nome do pet">
+        <p class="erro" id="erro-pet" role="alert"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 2. porte ══ -->
+  <section class="tela" data-tela="porte" data-passo="2">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 2</p>
+      <h2 class="pergunta">Qual o porte dele?</h2>
+      <div class="opcoes opcoes--3" id="portes">
+        <button type="button" class="opcao" data-valor="Pequeno">
+          <span class="opcao__bicho opcao__bicho--p" aria-hidden="true"><svg><use href="#paw"/></svg></span>
+          <b>Pequeno</b>
+          <i>até 10 kg</i>
+        </button>
+        <button type="button" class="opcao" data-valor="Médio">
+          <span class="opcao__bicho opcao__bicho--m" aria-hidden="true"><svg><use href="#paw"/></svg></span>
+          <b>Médio</b>
+          <i>10 a 25 kg</i>
+        </button>
+        <button type="button" class="opcao" data-valor="Grande">
+          <span class="opcao__bicho opcao__bicho--g" aria-hidden="true"><svg><use href="#paw"/></svg></span>
+          <b>Grande</b>
+          <i>acima de 25 kg</i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 3. raça ══ -->
+  <section class="tela" data-tela="raca" data-passo="3">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 3</p>
+      <h2 class="pergunta">E a raça?</h2>
+      <div class="campo-solto">
+        <input type="text" id="raca" placeholder="Ex.: Shih-tzu" autocomplete="off"
+               enterkeyhint="next" maxlength="40" aria-label="Raça do pet">
+      </div>
+      <div class="sugestoes" id="racas"></div>
+      <button type="button" class="pular" id="sem-raca">Não sei / sem raça definida</button>
+    </div>
+  </section>
+
+  <!-- ══ 4. serviços ══ -->
+  <section class="tela" data-tela="servicos" data-passo="4">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 4</p>
+      <h2 class="pergunta">O que ele vai fazer hoje?</h2>
+      <p class="ajuda">Pode escolher mais de um.</p>
+      <div class="opcoes opcoes--servicos" id="servicos"></div>
+      <p class="erro" id="erro-servicos" role="alert"></p>
+    </div>
+  </section>
+
+  <!-- ══ 5. quando ══ -->
+  <section class="tela" data-tela="quando" data-passo="5">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 5</p>
+      <h2 class="pergunta">Para quando?</h2>
+      <div class="dias" id="dias"></div>
+
+      <p class="sub">Horário que você prefere</p>
+      <div class="horas" id="horas"></div>
+    </div>
+  </section>
+
+  <!-- ══ 6. tutor ══ -->
+  <section class="tela" data-tela="tutor" data-passo="6">
+    <div class="tela__meio">
+      <p class="pergunta__n">Pergunta 6</p>
+      <h2 class="pergunta">Por último: como te chamamos?</h2>
+      <div class="campo-solto">
+        <input type="text" id="tutor" placeholder="Seu nome" autocomplete="name"
+               enterkeyhint="done" maxlength="40" aria-label="Seu nome">
+        <p class="erro" id="erro-tutor" role="alert"></p>
+      </div>
+      <label class="campo-obs">
+        <span>Quer avisar alguma coisa? <i>(opcional)</i></span>
+        <textarea id="obs" rows="3" maxlength="300"
+                  placeholder="Ex.: tem medo de secador, alergia a shampoo, pelo embolado atrás da orelha…"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <!-- ══ resumo ══ -->
+  <section class="tela" data-tela="resumo">
+    <div class="tela__meio">
+      <div class="pronto">
+        <span class="pronto__disco"><svg><use href="#ico-check"/></svg></span>
+        <div class="pronto__patas" aria-hidden="true"></div>
+      </div>
+
+      <h2 class="titulao titulao--menor">Prontinho, <span id="resumo-tutor">tudo certo</span>!</h2>
+      <p class="linha-fina">Confira e mande. A gente responde confirmando o horário.</p>
+
+      <ul class="ficha" id="ficha"></ul>
+
+      <button type="button" class="btn btn--zap btn--grande" id="enviar">
+        <svg class="btn__zap" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-zap"/></svg>
+        Mandar no WhatsApp
+      </button>
+      <button type="button" class="pular" id="recomecar">Começar de novo</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="barra" id="barra" hidden>
+  <div class="barra__miolo">
+    <button type="button" class="barra__voltar" id="voltar" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-volta"/></svg>
+    </button>
+    <button type="button" class="btn barra__seguir" id="seguir">
+      Continuar
+      <svg class="btn__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 5.3 16 12l-6.7 6.7-1.4-1.4 5.3-5.3-5.3-5.3z"/></svg>
+    </button>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/dados.js"></script>
+<script src="assets/js/agendar.js"></script>
+</body>
+</html>

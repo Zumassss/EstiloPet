@@ -61,15 +61,18 @@ python3 -m http.server 8000
 
 ```
 index.html                     site público
+agendar.html                   link de atendimento rápido (o quiz)
 painel.html                    painel interno (não linkado no site)
 robots.txt                     pede aos buscadores para ignorar o painel
 docs/planilha-apps-script.js   código para colar no Google Sheets
 assets/
   css/style.css                estilos do site
+  css/agendar.css              estilos do /agendar
   css/painel.css               estilos do painel
   js/config.js                 ⭐ dados do negócio — é aqui que você mexe
   js/dados.js                  camada de dados, compartilhada
   js/main.js                   interações do site
+  js/agendar.js                o passo a passo do /agendar
   js/painel.js                 métricas e gráficos do painel
   fonts/                       Archivo e Hanken Grotesk (self-hosted)
   img/                         fotos de clientes e da loja, otimizadas
@@ -92,6 +95,37 @@ salve em `assets/img/` e copie um dos blocos `<li class="star">` no `index.html`
 Archivo (títulos) e Hanken Grotesk (texto) ficam dentro do projeto em vez de vir
 do Google Fonts. O site carrega mais rápido, funciona offline e não envia o IP
 de quem visita para servidores do Google — o que ajuda do ponto de vista da LGPD.
+
+---
+
+## Link de atendimento rápido
+
+Endereço: **`/agendar`**
+No ar: <https://estilopet-beryl.vercel.app/agendar>
+
+É uma página separada do site, feita para ser **mandada direto**: no WhatsApp,
+na bio do Instagram, num QR code no balcão. Quem já é cliente não precisa passar
+pelo site inteiro para marcar de novo.
+
+São seis perguntas, uma por tela, no estilo de um quiz: nome do pet, porte, raça,
+serviços, dia e horário, e o seu nome. No fim mostra a ficha para conferir e abre
+a conversa no WhatsApp com tudo escrito.
+
+O que ela faz de diferente do formulário do site:
+
+- **Repetir o último.** O aparelho lembra do pedido anterior. Na volta, aparece
+  um atalho *"Da última vez: Mel, Shih-tzu, banho e hidratação"* que preenche
+  tudo e pula direto para a escolha do dia, que é o que muda.
+- **Dia em cartões**, os próximos sete, com "Hoje" e "Amanhã" por extenso.
+  Domingo aparece fechado e não dá para escolher.
+- **Sábado só até 14h**: os horários da tarde nem aparecem nesse dia.
+- Dá para voltar e mudar qualquer resposta pela ficha do fim, sem recomeçar.
+
+Os pedidos feitos por aqui **caem no painel do mesmo jeito** que os do site, com
+a marca `SITE`, e valem para todas as métricas.
+
+Ela não é linkada no site nem indexada pelos buscadores: o link é seu, para
+mandar para quem você quiser.
 
 ---
 
