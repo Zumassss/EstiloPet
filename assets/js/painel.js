@@ -11,17 +11,9 @@ const NS = "http://www.w3.org/2000/svg";
 const PORTES = ["Pequeno", "Médio", "Grande"];
 const COR_PORTE = { "Pequeno": "var(--serie-1)", "Médio": "var(--serie-2)", "Grande": "var(--serie-3)" };
 
-const SITUACOES = {
-  pendente:   { nome: "Pendente",   cor: "var(--st-pendente)" },
-  confirmado: { nome: "Confirmado", cor: "var(--st-confirmado)" },
-  concluido:  { nome: "Concluído",  cor: "var(--st-concluido)" },
-  faltou:     { nome: "Não veio",   cor: "var(--st-faltou)" }
-};
-const CICLO = ["pendente", "confirmado", "concluido", "faltou"];
-
 const VISTAS = {
-  visao:   { titulo: "Visão geral",   sub: "O que passou e o que está marcado" },
-  agenda:  { titulo: "Agendamentos",  sub: "Lista completa, com situação de cada um" },
+  visao:   { titulo: "Visão geral",   sub: "Os pedidos que chegaram pelo site" },
+  agenda:  { titulo: "Pedidos",       sub: "Lista completa do que foi pedido" },
   pets:    { titulo: "Pets e raças",  sub: "Quem a loja atende" },
   ajustes: { titulo: "Ajustes",       sub: "Conexão, backup e limpeza" }
 };
@@ -39,9 +31,21 @@ const escapar = (s) => String(s ?? "").replace(/[&<>"']/g,
 /* ═══ ESTADO ══════════════════════════════════════════════ */
 let dados = [];
 let conexao = { estado: "desligado" };
+let novosIds = new Set();        // pedidos que chegaram desde a última tela
+let ultimaAtualizacao = Date.now();
+
+/* Quantos pedidos entraram desde a última vez que alguém abriu
+   a lista. É o número do selo no menu — e some ao abrir. */
+const CHAVE_VISTO = "estilopet:visto-em";
+const vistoEm = () => { try { return localStorage.getItem(CHAVE_VISTO) || ""; } catch { return ""; } };
+const marcarVisto = () => { try { localStorage.setItem(CHAVE_VISTO, new Date().toISOString()); } catch {} };
+const contarNaoVistos = () => {
+  const desde = vistoEm();
+  return dados.filter((a) => a.origem === "site" && String(a.criadoEm || "") > desde).length;
+};
 
 const estado = {
-  vista: "visao", dias: 30, busca: "", filtroStatus: null,
+  vista: "visao", dias: 30, busca: "",
   col: "data", dir: "desc", pagina: 1, porPagina: 12
 };
 
@@ -70,18 +74,18 @@ function noPeriodoFechado(lista, dias, deslocamento) {
 const chavePet = (a) => `${(a.pet || "").toLowerCase()}|${(a.tutor || "").toLowerCase()}`;
 
 function metricas(lista) {
-  const concluidos = lista.filter((a) => a.status === "concluido");
-  const receita = concluidos.reduce((s, a) => s + (Number(a.valor) || 0), 0);
+  // Sem retorno do WhatsApp não dá para saber se o atendimento
+  // aconteceu. Então o valor aqui é o que foi PEDIDO, estimado
+  // pela tabela de preços — e está rotulado assim na tela.
+  const valor = lista.reduce((s, a) => s + (Number(a.valor) || 0), 0);
   const porPet = new Map();
   lista.forEach((a) => porPet.set(chavePet(a), (porPet.get(chavePet(a)) || 0) + 1));
   return {
     total: lista.length,
     doSite: lista.filter((a) => a.origem === "site").length,
-    concluidos: concluidos.length,
-    receita,
-    ticket: concluidos.length ? receita / concluidos.length : 0,
-    pets: porPet.size,
-    conversao: lista.length ? (concluidos.length / lista.length) * 100 : 0
+    valor,
+    ticket: lista.length ? valor / lista.length : 0,
+    pets: porPet.size
   };
 }
 
@@ -181,7 +185,7 @@ function graficoMovimento(caixa, lista) {
   }
   if (serie.length < 2) return semDados(caixa, "Poucos dias para desenhar o movimento");
 
-  const { svg, largura, altura } = novoSvg(caixa, 258);
+  const { svg, largura, altura } = novoSvg(caixa, 320);
   const m = { t: 16, d: 14, b: 30, e: 34 };
   const L = largura - m.e - m.d, A = altura - m.t - m.b;
   const { teto, linhas } = escala(Math.max(...serie.map((p) => p.n)));
@@ -257,20 +261,41 @@ function graficoMovimento(caixa, lista) {
     `<span class="legenda__i"><span class="legenda__c" style="background:var(--amarelo)"></span>${serie.length} dias</span>`;
 }
 
-/* ═══ FUNIL DE SITUAÇÃO ═══════════════════════════════════ */
-function desenharFunil(caixa, lista) {
-  if (!lista.length) return semDados(caixa);
-  const total = lista.length;
-  caixa.innerHTML = CICLO.map((chave) => {
-    const n = lista.filter((a) => a.status === chave).length;
-    const pct = total ? (n / total) * 100 : 0;
-    return `
-      <div class="funil__i" style="--tom:${SITUACOES[chave].cor};--fatia:${(pct / 100).toFixed(3)}">
-        <span class="funil__ponto"></span>
-        <span class="funil__nome">${SITUACOES[chave].nome}</span>
-        <span class="funil__n">${n}<span class="funil__pct">${pct.toFixed(0)}%</span></span>
-      </div>`;
-  }).join("");
+/* ═══ CHEGANDO AGORA ══════════════════════════════════════ */
+const AGORA_LIMITE = 5;
+
+function tempoRelativo(iso) {
+  if (!iso) return "";
+  const seg = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+  if (seg < 60) return "agora";
+  const min = Math.floor(seg / 60);
+  if (min < 60) return `há ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `há ${h} h`;
+  const d = Math.floor(h / 24);
+  return d === 1 ? "ontem" : `há ${d} dias`;
+}
+
+function desenharChegando(caixa, lista) {
+  if (!lista.length) return semDados(caixa, "Nenhum pedido ainda");
+
+  // os mais recentes pelo momento em que entraram, não pela data marcada
+  const recentes = [...lista]
+    .sort((a, b) => String(b.criadoEm || "").localeCompare(String(a.criadoEm || "")))
+    .slice(0, AGORA_LIMITE);
+
+  caixa.innerHTML = recentes.map((a) => `
+    <div class="chegou" data-id="${a.id}">
+      <span class="chegou__ponto" style="--tom:${COR_PORTE[a.porte]}"></span>
+      <div class="chegou__quem">
+        <b>${escapar(a.pet)}</b>
+        <span>${escapar(a.raca || a.porte)}${a.servicos?.length ? ` · ${escapar(a.servicos[0])}` : ""}</span>
+      </div>
+      <div class="chegou__quando">
+        <b>${dataBR(a.data)}${a.hora ? ` ${a.hora}` : ""}</b>
+        <span>${a.origem === "site" ? tempoRelativo(a.criadoEm) : "à mão"}</span>
+      </div>
+    </div>`).join("");
 }
 
 /* ═══ BARRAS HORIZONTAIS ══════════════════════════════════ */
@@ -485,15 +510,15 @@ function desenharKpis(atual, fechadoAtual, anterior) {
   const mf = metricas(fechadoAtual), ma = metricas(anterior);
 
   const cartoes = [
-    { k: "Agendamentos", v: m.total, base: mf.total, ant: ma.total, tom: "var(--amarelo)",
+    { k: "Pedidos", v: m.total, base: mf.total, ant: ma.total, tom: "var(--amarelo)",
       fmt: (v) => Math.round(v),
-      extra: m.doSite ? `${m.doSite} vindo${m.doSite === 1 ? "" : "s"} do site` : "todos lançados à mão" },
-    { k: "Concluídos", v: m.concluidos, base: mf.concluidos, ant: ma.concluidos, tom: "var(--st-concluido)",
-      fmt: (v) => Math.round(v), fatia: m.total ? m.concluidos / m.total : 0 },
-    { k: "Faturamento", v: m.receita, base: mf.receita, ant: ma.receita, tom: "var(--st-confirmado)",
-      fmt: (v) => dinheiro(v), extra: "dos atendimentos concluídos" },
-    { k: "Ticket médio", v: m.ticket, base: mf.ticket, ant: ma.ticket, tom: "var(--serie-3)", fmt: (v) => dinheiro(v) },
-    { k: "Pets diferentes", v: m.pets, base: mf.pets, ant: ma.pets, tom: "var(--serie-2)", fmt: (v) => Math.round(v) }
+      extra: m.doSite ? `${m.doSite} pelo formulário do site` : "todos lançados à mão" },
+    { k: "Pets diferentes", v: m.pets, base: mf.pets, ant: ma.pets, tom: "var(--serie-1)",
+      fmt: (v) => Math.round(v) },
+    { k: "Valor estimado", v: m.valor, base: mf.valor, ant: ma.valor, tom: "var(--serie-3)",
+      fmt: (v) => dinheiro(v), extra: "estimado pela tabela de preços" },
+    { k: "Ticket médio", v: m.ticket, base: mf.ticket, ant: ma.ticket, tom: "var(--serie-2)",
+      fmt: (v) => dinheiro(v), extra: "por pedido" }
   ];
 
   $("#kpis").innerHTML = cartoes.map((c) => `
@@ -529,15 +554,15 @@ function desenhar() {
   const fechadoAtual = noPeriodoFechado(dados, estado.dias, 0);
   const anterior = noPeriodoFechado(dados, estado.dias, 1);
 
-  const pendentes = dados.filter((a) => a.status === "pendente").length;
-  const selo = $("#selo-pendentes");
-  selo.hidden = !pendentes;
-  selo.textContent = pendentes;
+  const naoVistos = contarNaoVistos();
+  const selo = $("#selo-novos");
+  selo.hidden = !naoVistos;
+  selo.textContent = naoVistos > 99 ? "99+" : naoVistos;
 
   if (estado.vista === "visao") {
     desenharKpis(atual, fechadoAtual, anterior);
     graficoMovimento($("#viz-movimento"), atual);
-    desenharFunil($("#funil"), atual);
+    desenharChegando($("#chegando"), atual);
 
     const porHora = new Map();
     for (let h = 8; h <= 18; h++) porHora.set(h, 0);
@@ -578,28 +603,13 @@ function desenhar() {
     if (!fieis.length) semDados($("#viz-fieis"), "Nenhum pet voltou mais de uma vez neste período");
   }
 
-  if (estado.vista === "agenda") desenharFiltros(atual), desenharTabela();
+  if (estado.vista === "agenda") desenharTabela();
   if (estado.vista === "ajustes") desenharConexao();
-}
-
-/* ═══ FILTROS DE SITUAÇÃO ═════════════════════════════════ */
-function desenharFiltros(lista) {
-  const cont = contar(lista, (a) => a.status);
-  $("#filtros-status").innerHTML =
-    `<button class="filtro ${!estado.filtroStatus ? "is-on" : ""}" data-status="">
-       Todos <span class="filtro__n">${lista.length}</span>
-     </button>` +
-    CICLO.map((k) => `
-      <button class="filtro ${estado.filtroStatus === k ? "is-on" : ""}" data-status="${k}" style="--tom:${SITUACOES[k].cor}">
-        <span class="filtro__p"></span>${SITUACOES[k].nome}
-        <span class="filtro__n">${cont.get(k) || 0}</span>
-      </button>`).join("");
 }
 
 /* ═══ TABELA ══════════════════════════════════════════════ */
 function listaFiltrada() {
   let lista = noPeriodo(dados, estado.dias);
-  if (estado.filtroStatus) lista = lista.filter((a) => a.status === estado.filtroStatus);
   const q = estado.busca.trim().toLowerCase();
   if (q) lista = lista.filter((a) =>
     [a.pet, a.tutor, a.raca, a.porte, (a.servicos || []).join(" ")].join(" ").toLowerCase().includes(q));
@@ -608,7 +618,12 @@ function listaFiltrada() {
   return lista.sort((a, b) => {
     const c = estado.col;
     if (c === "valor") return ((Number(a.valor) || 0) - (Number(b.valor) || 0)) * s;
-    if (c === "data") return ((a.data + (a.hora || "")) > (b.data + (b.hora || "")) ? 1 : -1) * s;
+    if (c === "data") {
+      // mesmo dia sem horário: quem chegou por último aparece primeiro
+      const ka = a.data + (a.hora || "~") + (a.criadoEm || "");
+      const kb = b.data + (b.hora || "~") + (b.criadoEm || "");
+      return (ka > kb ? 1 : ka < kb ? -1 : 0) * s;
+    }
     return String(a[c] || "").localeCompare(String(b[c] || ""), "pt-BR") * s;
   });
 }
@@ -619,14 +634,14 @@ function desenharTabela() {
   estado.pagina = Math.min(estado.pagina, paginas);
   const pagina = lista.slice((estado.pagina - 1) * estado.porPagina, estado.pagina * estado.porPagina);
 
-  const soma = lista.filter((a) => a.status === "concluido").reduce((s, a) => s + (Number(a.valor) || 0), 0);
+  const soma = lista.reduce((s, a) => s + (Number(a.valor) || 0), 0);
   $("#tabela-contagem").textContent =
-    `${lista.length} agendamento${lista.length === 1 ? "" : "s"} · ${dinheiroExato(soma)} concluído${lista.length === 1 ? "" : "s"}`;
+    `${lista.length} pedido${lista.length === 1 ? "" : "s"} · ${dinheiroExato(soma)} estimados`;
 
   const inicial = { "Pequeno": "p", "Médio": "m", "Grande": "g" };
 
   $("#corpo-tabela").innerHTML = pagina.map((a) => `
-    <tr>
+    <tr${novosIds.has(a.id) ? ' class="novo"' : ""}>
       <td class="tabela__quando">
         <b>${dataBRCompleta(a.data)}</b>${a.hora ? ` <span>${a.hora}</span>` : ""}
         ${a.origem === "site" ? '<span class="origem origem--site">site</span>' : ""}
@@ -636,10 +651,6 @@ function desenharTabela() {
       <td><span class="marcador marcador--${inicial[a.porte] || "p"}">${escapar(a.porte)}</span></td>
       <td class="tabela__servicos">${escapar((a.servicos || []).join(", ") || "—")}</td>
       <td>${escapar(a.tutor || "—")}</td>
-      <td>
-        <button class="situacao" data-ciclo="${a.id}" style="--tom:${SITUACOES[a.status].cor}"
-                title="Clique para avançar a situação">${SITUACOES[a.status].nome}</button>
-      </td>
       <td class="num">${a.valor ? dinheiroExato(Number(a.valor)) : "—"}</td>
       <td>
         <div class="acoes">
@@ -652,7 +663,7 @@ function desenharTabela() {
         </div>
       </td>
     </tr>`).join("") ||
-    `<tr><td colspan="9" style="text-align:center;color:var(--txt-3);padding:2.5rem">Nenhum agendamento encontrado</td></tr>`;
+    `<tr><td colspan="8" style="text-align:center;color:var(--txt-3);padding:2.5rem">Nenhum pedido encontrado</td></tr>`;
 
   const p = $("#paginacao");
   if (paginas <= 1) { p.innerHTML = ""; return; }
@@ -711,14 +722,9 @@ const modal = $("#modal");
 $("#fichas-servicos").innerHTML = (window.CONFIG?.servicos || []).map((s) =>
   `<label class="ficha"><input type="checkbox" value="${escapar(s)}"><span>${escapar(s)}</span></label>`).join("");
 
-$("#fichas-status").innerHTML = CICLO.map((k, i) =>
-  `<label class="ficha ficha--status" style="--tom:${SITUACOES[k].cor}">
-     <input type="radio" name="status" value="${k}" ${i === 0 ? "checked" : ""}><span>${SITUACOES[k].nome}</span>
-   </label>`).join("");
-
 function abrirModal(id) {
   const a = id ? dados.find((x) => x.id === id) : null;
-  $("#modal-titulo").textContent = a ? "Editar agendamento" : "Novo agendamento";
+  $("#modal-titulo").textContent = a ? "Editar pedido" : "Novo pedido";
   $("#modal-erro").textContent = "";
   $("#f-id").value = a?.id || "";
   $("#f-data").value = a?.data || Dados.hoje();
@@ -730,7 +736,6 @@ function abrirModal(id) {
   $("#f-valor").value = a?.valor || "";
   $("#f-obs").value = a?.obs || "";
   $$("#fichas-servicos input").forEach((i) => { i.checked = !!a?.servicos?.includes(i.value); });
-  $$('#fichas-status input').forEach((i) => { i.checked = i.value === (a?.status || "pendente"); });
   atualizarListaRacas();
   modal.showModal();
   $("#f-pet").focus();
@@ -753,7 +758,6 @@ $("#form-atendimento").addEventListener("submit", async (e) => {
     id: $("#f-id").value || undefined,
     criadoEm: anterior?.criadoEm,
     origem: anterior?.origem || "manual",
-    status: $('#fichas-status input:checked')?.value || "pendente",
     data, hora: $("#f-hora").value,
     pet, raca: $("#f-raca").value.trim(),
     porte: $("#f-porte").value,
@@ -766,7 +770,7 @@ $("#form-atendimento").addEventListener("submit", async (e) => {
   modal.close();
   dados = Dados.lerLocal();
   desenhar();
-  avisar(anterior ? "Agendamento atualizado" : "Agendamento registrado");
+  avisar(anterior ? "Pedido atualizado" : "Pedido registrado");
 });
 
 $("#fechar-modal").addEventListener("click", () => modal.close());
@@ -803,11 +807,11 @@ function baixar(nome, conteudo, tipo) {
 function exportarCsv() {
   const lista = listaFiltrada();
   if (!lista.length) return avisar("Nada para exportar");
-  const cab = ["Data","Hora","Pet","Raça","Porte","Tutor","Serviços","Situação","Valor","Origem","Observações"];
+  const cab = ["Data","Hora","Pet","Raça","Porte","Tutor","Serviços","Valor estimado","Origem","Observações"];
   const c = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const linhas = lista.map((a) => [
     a.data, a.hora, a.pet, a.raca, a.porte, a.tutor,
-    (a.servicos || []).join(" + "), SITUACOES[a.status].nome,
+    (a.servicos || []).join(" + "),
     String(a.valor ?? "").replace(".", ","), a.origem, a.obs
   ].map(c).join(";"));
   baixar(`estilopet-agendamentos-${Dados.hoje()}.csv`,
@@ -891,21 +895,16 @@ function gerarExemplo() {
       if (Math.random() < 0.12) servicos.push("Desembolo");
       if (Math.random() < 0.38) servicos.push("Cuidados finais");
 
-      // quanto mais recente, maior a chance de ainda estar em aberto
-      let status = "concluido";
-      if (volta <= 1) status = Math.random() < 0.7 ? "pendente" : "confirmado";
-      else if (volta <= 4) status = Math.random() < 0.45 ? "confirmado" : "concluido";
-      else if (Math.random() < 0.06) status = "faltou";
-
       const manha = Math.random() < 0.55;
       const h = manha ? 8 + Math.floor(Math.random() * 4) : 13 + Math.floor(Math.random() * 5);
 
       saida.push(Dados.normalizar({
         data: isoLocal(dia), hora: `${String(h).padStart(2, "0")}:${sorteia(["00", "30"])}`,
         tutor: c.tutor, pet: c.pet, raca: c.raca, porte: c.porte,
-        servicos, status,
+        servicos,
         origem: Math.random() < 0.62 ? "site" : "manual",
-        valor: status === "faltou" ? 0 : Dados.estimarValor(c.porte, servicos)
+        criadoEm: new Date(dia.getTime() - Math.random() * 36e5 * 48).toISOString(),
+        valor: Dados.estimarValor(c.porte, servicos)
       }));
     }
   }
@@ -915,6 +914,7 @@ function gerarExemplo() {
 /* ═══ NAVEGAÇÃO ═══════════════════════════════════════════ */
 function irPara(vista) {
   estado.vista = vista;
+  if (vista === "agenda") { marcarVisto(); $("#selo-novos").hidden = true; }
   $$(".menu__b").forEach((b) => b.classList.toggle("is-on", b.dataset.vista === vista));
   $$(".vista").forEach((s) => { s.hidden = s.dataset.vista !== vista || !dados.length; });
   $("#titulo-vista").textContent = VISTAS[vista].titulo;
@@ -957,15 +957,6 @@ $("#busca").addEventListener("input", (e) => {
   }, 180);
 });
 
-$("#filtros-status").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-status]");
-  if (!b) return;
-  estado.filtroStatus = b.dataset.status || null;
-  estado.pagina = 1;
-  desenharFiltros(noPeriodo(dados, estado.dias));
-  desenharTabela();
-});
-
 $$(".ordenar").forEach((b) => b.addEventListener("click", () => {
   const col = b.dataset.col;
   if (estado.col === col) estado.dir = estado.dir === "asc" ? "desc" : "asc";
@@ -975,33 +966,17 @@ $$(".ordenar").forEach((b) => b.addEventListener("click", () => {
   desenharTabela();
 }));
 
-$("#corpo-tabela").addEventListener("click", async (e) => {
-  const ciclo = e.target.closest("[data-ciclo]");
+$("#corpo-tabela").addEventListener("click", (e) => {
   const editar = e.target.closest("[data-editar]");
   const apagar = e.target.closest("[data-apagar]");
 
-  if (ciclo) {
-    const a = dados.find((x) => x.id === ciclo.dataset.ciclo);
-    if (!a) return;
-    const proximo = CICLO[(CICLO.indexOf(a.status) + 1) % CICLO.length];
-    // ao concluir sem valor lançado, sugere pela tabela de preços
-    const valor = proximo === "concluido" && !a.valor
-      ? Dados.estimarValor(a.porte, a.servicos) : a.valor;
-    await Dados.registrar({ ...a, status: proximo, valor });
-    dados = Dados.lerLocal();
-    desenharFiltros(noPeriodo(dados, estado.dias));
-    desenharTabela();
-    if (estado.vista === "visao") desenhar();
-    avisar(`${a.pet}: ${SITUACOES[proximo].nome.toLowerCase()}`);
-    return;
-  }
   if (editar) return abrirModal(editar.dataset.editar);
   if (apagar) {
     const a = dados.find((x) => x.id === apagar.dataset.apagar);
-    if (!a || !confirm(`Apagar o agendamento de ${a.pet} em ${dataBRCompleta(a.data)}?`)) return;
+    if (!a || !confirm(`Apagar o pedido de ${a.pet} em ${dataBRCompleta(a.data)}?`)) return;
     dados = Dados.remover(a.id);
     desenhar();
-    avisar("Agendamento apagado");
+    avisar("Pedido apagado");
   }
 });
 
@@ -1039,9 +1014,9 @@ $("#btn-sinc").addEventListener("click", async () => {
   const antes = dados.length;
   await sincronizar();
   b.classList.remove("girando");
-  const novos = dados.length - antes;
-  avisar(novos > 0 ? `${novos} novo${novos === 1 ? "" : "s"} agendamento${novos === 1 ? "" : "s"}`
-       : conexao.estado === "desligado" ? "Nenhuma planilha ligada ainda" : "Nada novo por aqui");
+  if (dados.length === antes) {
+    avisar(conexao.estado === "desligado" ? "Nenhuma planilha ligada ainda" : "Nada novo por aqui");
+  }
 });
 
 let tTamanho;
@@ -1065,11 +1040,16 @@ function mostrarTudo() {
 }
 
 async function sincronizar() {
+  const antes = new Set(dados.map((a) => a.id));
   const r = await Dados.listar();
   dados = r.lista;
   conexao = { estado: r.remoto };
+  ultimaAtualizacao = Date.now();
+  marcarNovos(antes);
   atualizarSeloConexao();
   mostrarTudo();
+  mostrarRelogio();
+  if (novosIds.size) avisar(`${novosIds.size} pedido${novosIds.size === 1 ? "" : "s"} novo${novosIds.size === 1 ? "" : "s"}`);
 }
 
 async function iniciar() {
@@ -1078,8 +1058,81 @@ async function iniciar() {
   mostrarTudo();
   moverBrilhoPeriodo();
   await sincronizar();
-  // busca novos pedidos de tempos em tempos, quando há planilha ligada
-  if (window.CONFIG?.endpoint) setInterval(sincronizar, 120000);
+  ligarTempoReal();
+}
+
+/* ═══ TEMPO REAL ══════════════════════════════════════════
+   Três caminhos, do mais rápido para o mais lento:
+
+   1. Outra aba deste mesmo navegador gravou algo — o recado
+      chega na hora pelo BroadcastChannel. É o caso de quem
+      preenche o formulário no computador da loja.
+   2. A planilha, quando ligada, é consultada de tempos em
+      tempos. Não existe empurrão do Google, só consulta.
+   3. Ao voltar para a aba, consulta na hora — ninguém quer
+      olhar para número velho.                                */
+const INTERVALO_ATIVO = 25000;    // aba aberta e à vista
+const INTERVALO_OCIOSO = 120000;  // aba em segundo plano
+
+let timerConsulta = null;
+
+function ligarTempoReal() {
+  // 1. aviso instantâneo de outra aba, com a lista já dentro
+  Dados.aoMudar((lista) => {
+    const antes = new Set(dados.map((a) => a.id));
+    dados = (lista || []).map(Dados.normalizar).filter(Boolean);
+    marcarNovos(antes);
+    ultimaAtualizacao = Date.now();
+    mostrarTudo();
+    if (novosIds.size) avisar(`${novosIds.size} pedido${novosIds.size === 1 ? "" : "s"} agora`);
+  });
+
+  // 2. consulta periódica, só faz sentido com planilha ligada
+  reprogramarConsulta();
+
+  // 3. de volta à aba: atualiza já
+  document.addEventListener("visibilitychange", () => {
+    reprogramarConsulta();
+    if (!document.hidden) sincronizar();
+  });
+  addEventListener("online", () => { Dados.esvaziarFila(); sincronizar(); });
+
+  // relógio do "atualizado há…"
+  setInterval(mostrarRelogio, 15000);
+  mostrarRelogio();
+}
+
+function reprogramarConsulta() {
+  clearInterval(timerConsulta);
+  if (!window.CONFIG?.endpoint) return;
+  timerConsulta = setInterval(
+    () => { if (!document.hidden) sincronizar(); },
+    document.hidden ? INTERVALO_OCIOSO : INTERVALO_ATIVO
+  );
+}
+
+let timerNovos = null;
+/* Vai somando: dois pedidos que cheguem em sequência ficam os
+   dois marcados, em vez de o segundo apagar o primeiro. */
+function marcarNovos(idsAntes) {
+  const novos = dados.filter((a) => !idsAntes.has(a.id)).map((a) => a.id);
+  if (!novos.length) return;
+  novos.forEach((id) => novosIds.add(id));
+  clearTimeout(timerNovos);
+  timerNovos = setTimeout(() => {
+    novosIds = new Set();
+    if (estado.vista === "agenda") desenharTabela();
+  }, 12000);
+}
+
+function mostrarRelogio() {
+  const seg = Math.round((Date.now() - ultimaAtualizacao) / 1000);
+  const txt = $("#aovivo-txt");
+  if (!txt) return;
+  txt.textContent = seg < 45 ? "agora"
+    : seg < 3600 ? `há ${Math.floor(seg / 60)} min`
+    : `há ${Math.floor(seg / 3600)} h`;
+  $("#aovivo").classList.toggle("is-parado", conexao.estado === "erro");
 }
 
 const DESTRAVADO = "estilopet:painel-aberto";

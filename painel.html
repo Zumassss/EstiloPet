@@ -85,8 +85,8 @@
         <svg><use href="#i-visao"/></svg> Visão geral
       </button>
       <button class="menu__b" data-vista="agenda">
-        <svg><use href="#i-agenda"/></svg> Agendamentos
-        <span class="menu__selo" id="selo-pendentes" hidden>0</span>
+        <svg><use href="#i-agenda"/></svg> Pedidos
+        <span class="menu__selo" id="selo-novos" hidden>0</span>
       </button>
       <span class="menu__k">Clientes</span>
       <button class="menu__b" data-vista="pets">
@@ -115,7 +115,7 @@
 
       <div class="topo__titulo">
         <h1 id="titulo-vista">Visão geral</h1>
-        <p id="sub-vista">Tudo que passou pela loja</p>
+        <p id="sub-vista">Os pedidos que chegaram pelo site</p>
       </div>
 
       <div class="topo__acoes">
@@ -127,7 +127,11 @@
           <button class="periodo__b" data-dias="365">1a</button>
           <button class="periodo__b" data-dias="0">Tudo</button>
         </div>
-        <button class="botao-icone" id="btn-sinc" title="Buscar novos agendamentos" aria-label="Buscar novos agendamentos">
+        <span class="aovivo" id="aovivo" title="O painel se atualiza sozinho">
+          <span class="aovivo__ponto" aria-hidden="true"></span>
+          <span class="aovivo__txt" id="aovivo-txt">agora</span>
+        </span>
+        <button class="botao-icone" id="btn-sinc" title="Buscar pedidos novos" aria-label="Buscar pedidos novos">
           <svg><use href="#i-sinc"/></svg>
         </button>
         <button class="btn btn--principal" id="btn-novo">
@@ -142,10 +146,10 @@
       <!-- estado vazio -->
       <section class="vazio vidro" id="vazio" hidden>
         <span class="vazio__disco"><svg><use href="#paw"/></svg></span>
-        <h2>Ainda não chegou nenhum agendamento</h2>
+        <h2>Ainda não chegou nenhum pedido</h2>
         <p>
           Assim que alguém preencher o formulário do site e enviar para o WhatsApp,
-          o pedido aparece aqui sozinho — com pet, raça, porte, serviços e horário.
+          o pedido aparece aqui na hora — com pet, raça, porte, serviços e horário.
         </p>
         <div class="vazio__acoes">
           <button class="btn btn--principal" id="btn-exemplo">Ver com dados de exemplo</button>
@@ -164,7 +168,7 @@
             <header class="cartao__topo">
               <div>
                 <h2 class="cartao__titulo">Movimento</h2>
-                <p class="cartao__sub">Por dia, incluindo o que já está marcado</p>
+                <p class="cartao__sub">Pedidos por dia, incluindo o que está marcado à frente</p>
               </div>
               <div class="legenda" id="legenda-movimento"></div>
             </header>
@@ -174,11 +178,11 @@
           <article class="cartao vidro">
             <header class="cartao__topo">
               <div>
-                <h2 class="cartao__titulo">Situação</h2>
-                <p class="cartao__sub">Do pedido até a conclusão</p>
+                <h2 class="cartao__titulo">Chegando agora</h2>
+                <p class="cartao__sub">Os últimos pedidos que entraram</p>
               </div>
             </header>
-            <div class="funil" id="funil"></div>
+            <div class="chegando" id="chegando"></div>
           </article>
         </div>
 
@@ -219,7 +223,10 @@
       <section class="vista" data-vista="agenda" hidden>
         <article class="cartao vidro">
           <header class="cartao__topo cartao__topo--ferramentas">
-            <div class="filtros" id="filtros-status"></div>
+            <div>
+              <h2 class="cartao__titulo">Pedidos recebidos</h2>
+              <p class="cartao__sub" id="tabela-contagem"></p>
+            </div>
             <div class="ferramentas">
               <label class="busca">
                 <svg class="ico"><use href="#i-busca"/></svg>
@@ -230,7 +237,6 @@
             </div>
           </header>
 
-          <p class="cartao__sub" id="tabela-contagem"></p>
 
           <div class="tabela-rolagem">
             <table class="tabela">
@@ -242,7 +248,6 @@
                   <th><button class="ordenar" data-col="porte">Porte</button></th>
                   <th>Serviços</th>
                   <th><button class="ordenar" data-col="tutor">Tutor</button></th>
-                  <th>Situação</th>
                   <th class="num"><button class="ordenar" data-col="valor">Valor</button></th>
                   <th><span class="sr">Ações</span></th>
                 </tr>
@@ -357,7 +362,7 @@
 <dialog class="modal" id="modal">
   <form class="modal__form" id="form-atendimento" method="dialog" novalidate>
     <header class="modal__topo">
-      <h2 id="modal-titulo">Novo agendamento</h2>
+      <h2 id="modal-titulo">Novo pedido</h2>
       <button class="botao-icone" type="button" id="fechar-modal" aria-label="Fechar">
         <svg><use href="#i-x"/></svg>
       </button>
@@ -398,10 +403,6 @@
         <div class="fichas" id="fichas-servicos"></div>
       </fieldset>
 
-      <fieldset class="campo">
-        <legend>Situação</legend>
-        <div class="fichas" id="fichas-status"></div>
-      </fieldset>
       <div class="campo">
         <label for="f-valor">Valor (R$)</label>
         <input id="f-valor" type="number" min="0" step="0.01" placeholder="0,00">

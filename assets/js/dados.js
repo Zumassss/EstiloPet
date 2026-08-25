@@ -12,7 +12,51 @@ window.Dados = (() => {
   const CHAVE = "estilopet:agendamentos";
   const CHAVE_FILA = "estilopet:fila-envio";
 
-  const STATUS = ["pendente", "confirmado", "concluido", "faltou"];
+  /* Aviso de mudança entre abas do mesmo navegador.
+     Quando alguém preenche o formulário numa aba, a aba do
+     painel recebe o recado na hora — sem precisar recarregar
+     nem esperar a próxima consulta. */
+  const canal = "BroadcastChannel" in self ? new BroadcastChannel("estilopet:dados") : null;
+  const ouvintes = new Set();
+
+  /* O recado leva a lista junto — e isso não é capricho.
+     A gravação no localStorage de uma aba demora um instante
+     para ficar visível nas outras; o recado pelo canal chega
+     antes disso. Quem recebesse só o aviso e fosse reler ainda
+     leria a lista antiga. Mandando o conteúdo junto, não há
+     corrida: o que chega já é o estado novo.
+
+     Quem gravou não é avisado — o BroadcastChannel não entrega
+     para quem envia, e a própria aba já sabe o que escreveu. */
+  function avisarMudanca(texto) {
+    try { canal?.postMessage({ t: Date.now(), lista: texto }); } catch {}
+  }
+
+  function receber(texto) {
+    let lista = null;
+    if (texto) { try { lista = JSON.parse(texto); } catch {} }
+    if (!Array.isArray(lista)) lista = lerLocal();
+    ouvintes.forEach((f) => {
+      // engolir o erro aqui esconde defeito de quem escuta:
+      // avisa no console e segue para os outros ouvintes
+      try { f(lista); } catch (erro) { console.error("[EstiloPet] ouvinte falhou:", erro); }
+    });
+  }
+
+  // Um caminho OU o outro, nunca os dois: com os dois ligados o
+  // mesmo gravar chega duas vezes, e quem escuta acha que a
+  // segunda foi uma mudança nova (sem nada de novo dentro).
+  if (canal) {
+    canal.addEventListener("message", (e) => receber(e.data?.lista));
+  } else {
+    // sem canal, sobra o evento de armazenamento — que já vem
+    // com o valor novo, então também não sofre da corrida.
+    addEventListener("storage", (e) => { if (e.key === CHAVE) receber(e.newValue); });
+  }
+
+  /** Chama de volta sempre que a lista mudar, aqui ou em outra
+   *  aba. Recebe a lista já pronta como argumento. */
+  function aoMudar(fn) { ouvintes.add(fn); return () => ouvintes.delete(fn); }
 
   const novoId = () =>
     Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -26,9 +70,11 @@ window.Dados = (() => {
     } catch { return []; }
   }
 
-  function gravarLocal(lista) {
+  function gravarLocal(lista, { avisar = true } = {}) {
     try {
-      localStorage.setItem(CHAVE, JSON.stringify(lista));
+      const texto = JSON.stringify(lista);
+      localStorage.setItem(CHAVE, texto);
+      if (avisar) avisarMudanca(texto);
       return true;
     } catch { return false; }
   }
@@ -50,7 +96,6 @@ window.Dados = (() => {
       id: bruto.id || novoId(),
       criadoEm: bruto.criadoEm || new Date().toISOString(),
       origem: bruto.origem === "site" ? "site" : "manual",
-      status: STATUS.includes(bruto.status) ? bruto.status : "pendente",
       data: bruto.data || hoje(),
       hora: bruto.hora || "",
       tutor: String(bruto.tutor || "").trim(),
@@ -163,8 +208,10 @@ window.Dados = (() => {
       remotos.forEach((r) => mapa.set(r.id, r));
 
       const lista = ordenar([...mapa.values()]);
-      gravarLocal(lista);
-      return { lista, remoto: "ok", quantosRemotos: remotos.length };
+      const mudou = lista.length !== locais.length ||
+        lista.some((r, i) => r.id !== locais[i]?.id);
+      gravarLocal(lista, { avisar: mudou });
+      return { lista, remoto: "ok", novos: lista.length - locais.length, mudou };
     } catch (erro) {
       return { lista: ordenar(locais), remoto: "erro", mensagem: String(erro.message || erro) };
     }
@@ -192,8 +239,8 @@ window.Dados = (() => {
   }
 
   return {
-    STATUS, novoId, hoje, normalizar, estimarValor,
+    novoId, hoje, normalizar, estimarValor,
     registrar, listar, remover, substituirTudo, limpar,
-    lerLocal, esvaziarFila
+    lerLocal, esvaziarFila, aoMudar
   };
 })();

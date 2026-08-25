@@ -355,7 +355,6 @@ form.addEventListener("submit", (e) => {
   const iso = form.elements.dia.value;
   window.Dados?.registrar({
     origem: "site",
-    status: "pendente",
     data: iso || window.Dados.hoje(),
     hora: d.hora,
     tutor: d.tutor,

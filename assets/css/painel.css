@@ -41,12 +41,6 @@
   --serie-2: #D95926;
   --serie-3: #199E70;
 
-  /* situações — sempre acompanhadas do rótulo escrito */
-  --st-pendente:   #FFC20E;
-  --st-confirmado: #3987E5;
-  --st-concluido:  #2BB673;
-  --st-faltou:     #E5624E;
-
   --ok:   #2BB673;
   --ruim: #E5624E;
 
@@ -81,7 +75,7 @@ svg{ display:block; }
 :focus-visible{ outline:2px solid var(--amarelo); outline-offset:2px; border-radius:6px; }
 .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 .ico{ width:1.05em; height:1.05em; fill:currentColor; flex:none; }
-.kpi__v,.tabela td,.num,.viz text,.funil__n{ font-variant-numeric:tabular-nums; }
+.kpi__v,.tabela td,.num,.viz text{ font-variant-numeric:tabular-nums; }
 
 /* ── luzes de fundo ────────────────────────────────────── */
 .brilhos{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
@@ -486,56 +480,52 @@ svg{ display:block; }
 @keyframes crescer{ from{ transform:scaleY(0); } to{ transform:scaleY(1); } }
 @keyframes surgir{ from{ opacity:0; } to{ opacity:1; } }
 
-/* ── funil de situação ─────────────────────────────────── */
-.funil{ display:grid; gap:.6rem; }
-.funil__i{
-  position:relative; overflow:hidden;
-  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:.7rem;
-  padding:.72rem .85rem; border-radius:14px;
+/* ── chegando agora ────────────────────────────────────── */
+.chegando{ display:grid; gap:.5rem; }
+.chegou{
+  display:grid; grid-template-columns:auto 1fr auto; gap:.7rem; align-items:center;
+  padding:.65rem .8rem; border-radius:12px;
   background:rgba(255,255,255,.035); border:1px solid var(--borda);
-  transition:transform .25s var(--ease), border-color .25s var(--ease);
+  transition:border-color .25s var(--ease), transform .25s var(--ease);
+  animation:aparecer .5s var(--ease) both;
 }
-.funil__i:hover{ transform:translateX(3px); border-color:var(--borda-viva); }
-.funil__i::before{
-  content:""; position:absolute; inset:0; border-radius:14px;
-  background:linear-gradient(90deg, var(--tom), transparent);
-  opacity:.11; transform-origin:left;
-  transform:scaleX(var(--fatia,0));
-  animation:esticar .8s var(--ease) both;
+.chegou:hover{ border-color:var(--borda-viva); transform:translateX(2px); }
+.chegou__ponto{
+  width:8px; height:8px; border-radius:50%; background:var(--tom); flex:none;
+  box-shadow:0 0 10px 0 var(--tom);
 }
-.funil__ponto{
-  width:9px; height:9px; border-radius:50%; background:var(--tom);
-  box-shadow:0 0 12px 0 var(--tom); flex:none; position:relative;
+.chegou__quem{ display:grid; gap:.05rem; min-width:0; }
+.chegou__quem b{ font-size:.9rem; font-weight:700; }
+.chegou__quem span{
+  font-size:.76rem; color:var(--txt-3);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
-.funil__nome{ font-size:.87rem; font-weight:600; position:relative; }
-.funil__n{
-  display:flex; align-items:baseline; gap:.55rem; position:relative;
-  font-family:Archivo,system-ui,sans-serif; font-stretch:108%;
-  font-size:1.05rem; font-weight:800;
+.chegou__quando{ display:grid; gap:.05rem; text-align:right; }
+.chegou__quando b{
+  font-family:Archivo,system-ui,sans-serif; font-stretch:104%;
+  font-size:.84rem; font-weight:700; font-variant-numeric:tabular-nums;
 }
-.funil__pct{
-  min-width:38px; text-align:right;
-  font-family:"Hanken Grotesk",system-ui,sans-serif;
-  font-size:.74rem; font-weight:600; color:var(--txt-3);
-}
+.chegou__quando span{ font-size:.72rem; color:var(--txt-3); }
 
-/* ── filtros de situação ───────────────────────────────── */
-.filtros{ display:flex; flex-wrap:wrap; gap:.4rem; }
-.filtro{
-  display:inline-flex; align-items:center; gap:.4rem;
-  background:rgba(255,255,255,.04); border:1px solid var(--borda);
-  border-radius:100px; padding:.34rem .8rem; cursor:pointer;
-  font-size:.8rem; font-weight:600; color:var(--txt-2);
-  transition:all .2s var(--ease);
+/* ── indicador de atualização ──────────────────────────── */
+.aovivo{
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:.35rem .75rem; border-radius:100px;
+  background:rgba(43,182,115,.1); border:1px solid rgba(43,182,115,.32);
+  font-size:.76rem; color:var(--txt-2); white-space:nowrap;
 }
-.filtro:hover{ color:var(--txt); border-color:var(--borda-viva); }
-.filtro.is-on{
-  color:var(--txt); background:rgba(255,255,255,.09);
-  border-color:var(--tom, var(--amarelo));
-  box-shadow:0 0 0 1px var(--tom, var(--amarelo)) inset;
+.aovivo__ponto{
+  width:7px; height:7px; border-radius:50%; background:var(--ok); flex:none;
+  box-shadow:0 0 0 0 rgba(43,182,115,.6);
+  animation:bater 2.6s ease-out infinite;
 }
-.filtro__p{ width:7px; height:7px; border-radius:50%; background:var(--tom, var(--txt-3)); flex:none; }
-.filtro__n{ color:var(--txt-3); font-weight:700; }
+@keyframes bater{
+  0%  { box-shadow:0 0 0 0 rgba(43,182,115,.55); }
+  70% { box-shadow:0 0 0 8px rgba(43,182,115,0); }
+  100%{ box-shadow:0 0 0 0 rgba(43,182,115,0); }
+}
+.aovivo.is-parado{ background:rgba(229,98,78,.1); border-color:rgba(229,98,78,.35); }
+.aovivo.is-parado .aovivo__ponto{ background:var(--ruim); animation:none; }
 
 /* ── tabela ────────────────────────────────────────────── */
 .ferramentas{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
@@ -575,6 +565,14 @@ svg{ display:block; }
 .tabela td{ padding:.62rem .7rem; border-bottom:1px solid rgba(125,170,230,.08); }
 .tabela tbody tr{ transition:background-color .16s var(--ease); }
 .tabela tbody tr:hover{ background:rgba(255,255,255,.035); }
+/* pedido que entrou desde a última olhada */
+.tabela tbody tr.novo{ animation:acendeu 12s var(--ease) forwards; }
+.tabela tbody tr.novo td:first-child{ box-shadow:inset 3px 0 0 var(--amarelo); }
+@keyframes acendeu{
+  0%   { background:rgba(255,194,14,.2); }
+  12%  { background:rgba(255,194,14,.13); }
+  100% { background:transparent; }
+}
 .tabela .num{ text-align:right; }
 .tabela__pet{ font-weight:700; }
 .tabela__servicos{ color:var(--txt-2); font-size:.81rem; }
@@ -593,17 +591,6 @@ svg{ display:block; }
 .marcador--p{ color:var(--serie-1); }
 .marcador--m{ color:var(--serie-2); }
 .marcador--g{ color:var(--serie-3); }
-
-/* situação clicável, avança no ciclo */
-.situacao{
-  display:inline-flex; align-items:center; gap:.4rem;
-  background:none; border:1px solid var(--tom); border-radius:100px;
-  padding:.22rem .7rem; cursor:pointer; white-space:nowrap;
-  font-size:.74rem; font-weight:700; color:var(--tom);
-  transition:background-color .2s var(--ease), transform .2s var(--ease);
-}
-.situacao::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; flex:none; }
-.situacao:hover{ background:color-mix(in srgb, var(--tom) 16%, transparent); transform:translateY(-1px); }
 
 .acoes{ display:flex; gap:.25rem; justify-content:flex-end; }
 .acao{
@@ -692,9 +679,6 @@ svg{ display:block; }
   background:linear-gradient(140deg, var(--amarelo-2), var(--amarelo));
   border-color:transparent; color:#2A1D00; font-weight:700;
 }
-.ficha--status input:checked + span{
-  background:var(--tom); border-color:transparent; color:#04101E;
-}
 .ficha input:focus-visible + span{ outline:2px solid var(--amarelo); outline-offset:2px; }
 
 .modal__erro{ font-size:.82rem; color:#FF9C8C; }
@@ -768,6 +752,7 @@ svg{ display:block; }
 }
 
 @media (prefers-reduced-motion:reduce){
+  .aovivo__ponto{ animation:none; }
   *,*::before,*::after{
     animation-duration:.001ms !important;
     animation-iteration-count:1 !important;

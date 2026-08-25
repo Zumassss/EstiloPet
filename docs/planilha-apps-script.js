@@ -14,7 +14,7 @@
 const ABA = 'Agendamentos';
 
 const COLUNAS = [
-  'id', 'criadoEm', 'origem', 'status', 'data', 'hora',
+  'id', 'criadoEm', 'origem', 'data', 'hora',
   'tutor', 'pet', 'raca', 'porte', 'servicos', 'valor', 'obs'
 ];
 

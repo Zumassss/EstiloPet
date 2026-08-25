@@ -108,15 +108,30 @@ sem o `.html` no fim (e `/painel.html` redirecionar para lá).
 ### De onde vêm os números
 
 Quando alguém preenche o formulário do site e clica em "Abrir conversa no
-WhatsApp", o agendamento é registrado com pet, raça, porte, serviços, dia e
-horário. O painel soma tudo sozinho: você não precisa lançar nada à mão.
+WhatsApp", o pedido é registrado com pet, raça, porte, serviços, dia e horário.
+O painel soma tudo sozinho: você não precisa lançar nada à mão.
 
-Cada agendamento passa por quatro situações — **pendente → confirmado →
-concluído** (ou **não veio**). Basta clicar na etiqueta de situação, na tabela,
-para avançar. O faturamento conta só os concluídos.
+Não existe "situação" (pendente, confirmado, concluído) — e é de propósito. Pelo
+site, a pessoa só consegue mandar a mensagem no WhatsApp; o que acontece depois
+da mensagem acontece na conversa, e o site não tem como saber. Marcar situação
+seria você digitando à mão uma informação que o painel não confere: o valor
+mostrado é uma **estimativa** pela tabela de preços, não faturamento fechado.
 
 Quem chegou pelo site aparece com a marca `SITE` na lista. Dá para lançar um
-agendamento à mão também (o botão "Novo"), para quem ligou ou apareceu na porta.
+pedido à mão também (o botão "Novo"), para quem ligou ou apareceu na porta.
+
+### Tempo real
+
+O painel se atualiza sozinho, sem recarregar. Se o formulário for preenchido
+noutra aba do mesmo navegador, o pedido aparece no mesmo instante: os números
+sobem, ele entra no topo de "Chegando agora", a linha pisca por alguns segundos
+e o menu **Pedidos** ganha um contador do que você ainda não viu (que zera ao
+abrir a aba). O indicador **ao vivo**, no alto, mostra há quanto tempo foi a
+última atualização.
+
+Com a planilha ligada (abaixo), pedidos vindos de outros aparelhos entram na
+consulta seguinte — a cada 25 segundos com a aba à vista, e imediatamente quando
+você volta para ela.
 
 ### ⚠️ Ligando o site ao painel
 
@@ -172,12 +187,12 @@ Para trocar a senha (ou tirar a trava, deixando `""`), edite `assets/js/config.j
 
 ### O que tem em cada aba
 
-**Visão geral** — agendamentos, concluídos, faturamento, ticket médio e pets
-diferentes, cada um comparado ao período anterior. Mais o movimento por dia, o
-funil de situação, horários de pico, dias da semana e serviços mais pedidos.
+**Visão geral** — pedidos, pets diferentes, valor estimado e ticket médio, cada
+um comparado ao período anterior. Mais "Chegando agora", o movimento por dia,
+horários de pico, dias da semana e serviços mais pedidos.
 
-**Agendamentos** — a lista completa, com filtro por situação, busca, ordenação
-por coluna, edição, exclusão e exportação em CSV (abre direto no Excel).
+**Pedidos** — a lista completa, com busca, ordenação por coluna, edição,
+exclusão e exportação em CSV (abre direto no Excel).
 
 **Pets e raças** — distribuição por porte, ranking de raças, cruzamento de raça
 por porte e os clientes que mais voltam.
