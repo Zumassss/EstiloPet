@@ -2,20 +2,7 @@
    EstiloPet — interações do site
    ═══════════════════════════════════════════════════════════ */
 
-/* ───────────────────────────────────────────────────────────
-   DADOS DO NEGÓCIO — é só aqui que você precisa mexer.
-   ─────────────────────────────────────────────────────────── */
-const CONFIG = {
-  // Número do WhatsApp com código do país e DDD, só dígitos.
-  whatsapp: "5527998923963",
-
-  // Como o número aparece escrito na tela.
-  whatsappVisivel: "(27) 99892-3963",
-
-  // Usado no link do Google Maps quando o endereço não estiver preenchido.
-  endereco: "EstiloPet Estética Animal"
-};
-/* ─────────────────────────────────────────────────────────── */
+/* A configuração do negócio fica em assets/js/config.js */
 
 document.documentElement.classList.add("js");
 
@@ -164,6 +151,8 @@ function rolarAte(destino, aoTerminar) {
   }
 
   cancelAnimationFrame(rolagemEmAndamento);
+  deslizando = false;
+  posAtual = scrollY;
   const inicio = scrollY;
   const distancia = alvo - inicio;
   if (Math.abs(distancia) < 2) return aoTerminar?.();
@@ -176,9 +165,70 @@ function rolarAte(destino, aoTerminar) {
     const t = Math.min((agora - t0) / duracao, 1);
     scrollTo({ top: inicio + distancia * suavizar(t), behavior: "instant" });
     if (t < 1) rolagemEmAndamento = requestAnimationFrame(passo);
-    else aoTerminar?.();
+    else { alvoY = posAtual = scrollY; deslizando = false; aoTerminar?.(); }
   };
   rolagemEmAndamento = requestAnimationFrame(passo);
+}
+
+/* ── rolagem da roda com inércia ───────────────────────
+   O navegador rola de um jeito "picado", em saltos. Aqui a
+   roda só move um alvo, e a página persegue esse alvo quadro
+   a quadro — o que dá o deslize contínuo.
+
+   Fica de fora: quem pediu menos movimento, telas de toque
+   (que já têm inércia própria), o zoom com Ctrl e qualquer
+   área que tenha barra de rolagem própria.               */
+const ehTelaDeToque = matchMedia("(pointer: coarse)").matches;
+let alvoY = scrollY;
+let posAtual = scrollY;   // posição contínua nossa: o scrollY do navegador é arredondado
+let deslizando = false;
+
+const limiteY = () => document.documentElement.scrollHeight - innerHeight;
+
+function temRolagemPropria(no) {
+  while (no && no !== document.body && no !== document.documentElement) {
+    if (no.nodeType === 1) {
+      const s = getComputedStyle(no);
+      const rolaY = /auto|scroll/.test(s.overflowY) && no.scrollHeight > no.clientHeight + 1;
+      const rolaX = /auto|scroll/.test(s.overflowX) && no.scrollWidth > no.clientWidth + 1;
+      if (rolaY || rolaX) return true;
+    }
+    no = no.parentNode;
+  }
+  return false;
+}
+
+function deslizar() {
+  posAtual += (alvoY - posAtual) * 0.14;
+  if (Math.abs(alvoY - posAtual) < 0.5) { posAtual = alvoY; deslizando = false; }
+  scrollTo({ top: posAtual, behavior: "instant" });
+  if (deslizando) requestAnimationFrame(deslizar);
+}
+
+if (!ehTelaDeToque) {
+  addEventListener("wheel", (e) => {
+    if (querMenosMovimento.matches || e.ctrlKey) return;
+    if (temRolagemPropria(e.target)) return;
+
+    e.preventDefault();
+    cancelAnimationFrame(rolagemEmAndamento);   // um clique em âncora perde a vez
+
+    // o Firefox manda o movimento em linhas, não em pixels
+    const passo = e.deltaMode === 1 ? e.deltaY * 16
+                : e.deltaMode === 2 ? e.deltaY * innerHeight
+                : e.deltaY;
+
+    // parado: reencontra a posição real antes de começar
+    if (!deslizando) { posAtual = scrollY; alvoY = scrollY; }
+
+    alvoY = Math.max(0, Math.min(alvoY + passo, limiteY()));
+    if (!deslizando) { deslizando = true; requestAnimationFrame(deslizar); }
+  }, { passive: false });
+
+  // teclado, barra de rolagem e âncoras continuam mandando: só acompanhamos
+  addEventListener("scroll", () => {
+    if (!deslizando) { alvoY = scrollY; posAtual = scrollY; }
+  }, { passive: true });
 }
 
 // intercepta todo link de âncora da página
@@ -298,7 +348,30 @@ form.addEventListener("submit", (e) => {
     return;
   }
 
+  // abre o WhatsApp primeiro: se demorar, o navegador bloqueia a aba
   window.open(waLink(montarMensagem(d)), "_blank", "noopener");
+
+  // e registra o pedido para o painel da loja
+  const iso = form.elements.dia.value;
+  window.Dados?.registrar({
+    origem: "site",
+    status: "pendente",
+    data: iso || window.Dados.hoje(),
+    hora: d.hora,
+    tutor: d.tutor,
+    pet: d.pet,
+    raca: d.raca,
+    porte: d.porte,
+    servicos: d.servicos,
+    obs: d.obs
+  });
+
+  form.reset();
+  atualizarPreview();
+  $(".form__note").textContent = "Pedido enviado. Se o WhatsApp não abrir, verifique o bloqueio de pop-ups.";
 });
+
+// tenta reenviar o que ficou preso por falta de conexão
+window.Dados?.esvaziarFila();
 
 atualizarPreview();
