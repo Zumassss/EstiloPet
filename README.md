@@ -235,7 +235,17 @@ conversa desce para depois do formulário, que é onde ela faz sentido.
 
 **Ícones.** Cada serviço tem o seu (chuveiro, tesoura, máquina, gota, escova,
 gravata), desenhados à mão em SVG. Repetir a mesma patinha nos seis cartões era
-o que mais entregava molde pronto na página.
+o que mais entregava molde pronto na página. E cada um mexe do seu jeito: o
+chuveiro pinga, a tesoura corta, a máquina vibra, a gota pulsa, a escova varre e
+a gravata balança. Toca uma vez quando o cartão entra na tela e de novo a cada
+passada do mouse, porque no celular não existe passar o mouse.
+
+**Avaliações.** A nota fica num painel escuro só dela, com o 5,0 grande, e as
+três falas passam uma de cada vez num carrossel, com espaço para serem lidas.
+Troca sozinha a cada sete segundos e para assim que alguém encosta ou dá foco,
+para ninguém perder o texto no meio da leitura. Funciona pelas setas do teclado
+e não gira para quem pediu menos movimento. As três são as que estão no perfil
+do Google: nenhuma foi escrita para o site nem escolhida a dedo.
 
 **Botões.** Os botões "Agendar no WhatsApp" levam ao formulário e já deixam o
 cursor no primeiro campo. O botão verde flutuante vai direto para a conversa,

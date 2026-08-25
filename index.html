@@ -212,32 +212,32 @@
 
     <ul class="cards">
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-banho"/></svg></span>
+        <span class="card__icon" data-ico="banho"><svg><use href="#ico-banho"/></svg></span>
         <h3 class="card__title">Banho</h3>
         <p>Água morna, shampoo escolhido pelo tipo de pelo e secagem completa. Seu pet sai seco de verdade, não úmido.</p>
       </li>
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-tesoura"/></svg></span>
+        <span class="card__icon" data-ico="tesoura"><svg><use href="#ico-tesoura"/></svg></span>
         <h3 class="card__title">Tosa na tesoura</h3>
         <p>Acabamento feito à mão, respeitando o formato da raça e o jeito do seu pet. Leva mais tempo e aparece no resultado.</p>
       </li>
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-maquina"/></svg></span>
+        <span class="card__icon" data-ico="maquina"><svg><use href="#ico-maquina"/></svg></span>
         <h3 class="card__title">Tosa higiênica</h3>
         <p>Patinhas, barriga e região íntima aparadas. É rápida e faz diferença no dia a dia, principalmente no calor.</p>
       </li>
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-gota"/></svg></span>
+        <span class="card__icon" data-ico="gota"><svg><use href="#ico-gota"/></svg></span>
         <h3 class="card__title">Hidratação</h3>
         <p>Máscara aplicada fio a fio para pelo ressecado, opaco ou quebradiço. Devolve brilho e maciez ao toque.</p>
       </li>
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-escova"/></svg></span>
+        <span class="card__icon" data-ico="escova"><svg><use href="#ico-escova"/></svg></span>
         <h3 class="card__title">Desembolo</h3>
         <p>Desfazemos os nós com paciência, sem puxar. Quando o pelo já não tem salvação, a gente te explica antes de tosar.</p>
       </li>
       <li class="card reveal">
-        <span class="card__icon"><svg><use href="#ico-laco"/></svg></span>
+        <span class="card__icon" data-ico="laco"><svg><use href="#ico-laco"/></svg></span>
         <h3 class="card__title">Cuidados finais</h3>
         <p>Unhas cortadas, ouvidos limpos, dentes escovados e um laço ou gravata na saída. Já incluso em todo banho.</p>
       </li>
@@ -438,49 +438,91 @@
 
 <!-- ══ DEPOIMENTOS ══ -->
 <section class="sec sec--light" id="depoimentos">
-  <div class="wrap">
-    <header class="sec__head sec__head--centro reveal">
-      <p class="eyebrow eyebrow--dark"><span class="eyebrow__dot"></span>O que dizem</p>
-      <h2 class="sec__title">Nota 5,0 em 59 avaliações</h2>
-      <p class="sec__lead">
-        Avaliações públicas de clientes no Google. Nenhuma delas foi escrita por nós.
+  <div class="wrap prova">
+
+    <aside class="nota-card reveal">
+      <p class="eyebrow"><span class="eyebrow__dot"></span>O que dizem</p>
+      <h2 class="nota-card__titulo">A nota que a gente não escreveu</h2>
+
+      <div class="nota-card__score">
+        <strong>5,0</strong>
+        <div>
+          <span class="nota-card__estrelas" aria-hidden="true">★★★★★</span>
+          <span class="nota-card__base">59 avaliações no Google</span>
+        </div>
+      </div>
+
+      <p class="nota-card__txt">
+        Todas são públicas, de clientes que passaram por aqui. Nenhuma foi escrita
+        por nós, e nenhuma foi escolhida a dedo: são as que estão no perfil da loja.
       </p>
-    </header>
 
-    <ul class="depos">
-      <li class="depo reveal">
-        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
-        <blockquote>
-          Atendimento muito bom, prestativo. Meu cão é um York e tem bastante medo de
-          petshop e veterinários. Ao buscá-lo, ele estava todo feliz e já ambientado com
-          o local. Tem uma porta de vidro antes da porta de entrada da rua, impedindo
-          que o cão fuja.
-        </blockquote>
-        <p class="depo__quem"><b>Caroline S</b><span>Local Guide no Google</span></p>
-      </li>
-      <li class="depo reveal">
-        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
-        <blockquote>
-          Levei meu cachorro pela primeira vez e, como tutora, ficamos com medo do novo.
-          Mas me surpreendi: amei todo o trabalho e os profissionais, super atenciosos.
-          Meu cachorro não queria voltar pra casa. Super indico, virei cliente.
-        </blockquote>
-        <p class="depo__quem"><b>Juliana Almeida</b><span>Avaliação no Google</span></p>
-      </li>
-      <li class="depo reveal">
-        <span class="depo__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
-        <blockquote>
-          Merecidas as 5 estrelas. Um trabalho de excelência, um local seguro e o mais
-          importante: o carinho com nossos pets. Gostei demais.
-        </blockquote>
-        <p class="depo__quem"><b>Andressa Gaigher Peruchi</b><span>Avaliação no Google</span></p>
-      </li>
-    </ul>
+      <a class="btn btn--yellow" href="https://www.google.com/maps/search/?api=1&query=EstiloPet+Est%C3%A9tica+Animal+Praia+das+Gaivotas+Vila+Velha" target="_blank" rel="noopener">
+        Ver no Google
+      </a>
+    </aside>
 
-    <p class="sec__foot sec__foot--centro reveal">
-      <a href="https://www.google.com/maps/search/?api=1&query=EstiloPet+Est%C3%A9tica+Animal+Praia+das+Gaivotas+Vila+Velha"
-         target="_blank" rel="noopener">Ver as 59 avaliações no Google</a>
-    </p>
+    <div class="carrossel reveal" id="carrossel"
+         aria-roledescription="carrossel" aria-label="Avaliações de clientes">
+      <span class="carrossel__aspas" aria-hidden="true">”</span>
+
+      <div class="carrossel__palco">
+        <article class="fala is-on" id="fala-0">
+          <p class="fala__texto">Atendimento muito bom, prestativo. Meu cão é um York e tem bastante medo de petshop e veterinários. Ao buscá-lo, ele estava todo feliz e já ambientado com o local. Tem uma porta de vidro antes da porta de entrada da rua, impedindo que o cão fuja.</p>
+          <footer class="fala__quem">
+            <span class="fala__inicial" aria-hidden="true">C</span>
+            <span>
+              <b>Caroline S</b>
+              <i>Local Guide no Google</i>
+            </span>
+            <span class="fala__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+          </footer>
+        </article>
+        <article class="fala" id="fala-1">
+          <p class="fala__texto">Levei meu cachorro pela primeira vez e, como tutora, ficamos com medo do novo. Mas me surpreendi: amei todo o trabalho e os profissionais, super atenciosos. Meu cachorro não queria voltar pra casa. Super indico, virei cliente.</p>
+          <footer class="fala__quem">
+            <span class="fala__inicial" aria-hidden="true">J</span>
+            <span>
+              <b>Juliana Almeida</b>
+              <i>Avaliação no Google</i>
+            </span>
+            <span class="fala__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+          </footer>
+        </article>
+        <article class="fala" id="fala-2">
+          <p class="fala__texto">Merecidas as 5 estrelas. Um trabalho de excelência, um local seguro e o mais importante: o carinho com nossos pets. Gostei demais.</p>
+          <footer class="fala__quem">
+            <span class="fala__inicial" aria-hidden="true">A</span>
+            <span>
+              <b>Andressa Gaigher Peruchi</b>
+              <i>Avaliação no Google</i>
+            </span>
+            <span class="fala__estrelas" aria-label="5 de 5 estrelas">★★★★★</span>
+          </footer>
+        </article>
+      </div>
+
+      <div class="carrossel__barra">
+        <div class="carrossel__pontos">
+          <button type="button" class="ponto is-on" data-ir="0"
+                  aria-label="Ver avaliação 1 de 3"></button>
+          <button type="button" class="ponto" data-ir="1"
+                  aria-label="Ver avaliação 2 de 3"></button>
+          <button type="button" class="ponto" data-ir="2"
+                  aria-label="Ver avaliação 3 de 3"></button>
+        </div>
+
+        <div class="carrossel__setas">
+          <button type="button" id="fala-antes" aria-label="Avaliação anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 5.3 8 12l6.7 6.7 1.4-1.4-5.3-5.3 5.3-5.3z"/></svg>
+          </button>
+          <button type="button" id="fala-depois" aria-label="Próxima avaliação">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 5.3 16 12l-6.7 6.7-1.4-1.4 5.3-5.3-5.3-5.3z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 

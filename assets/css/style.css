@@ -415,7 +415,54 @@ legend{ padding:0; }
   transition:transform .45s var(--ease-out);
 }
 .card__icon svg{ width:56%; height:56%; fill:var(--navy); }
-.card:hover .card__icon{ transform:rotate(-12deg) scale(1.08); }
+.card:hover .card__icon{ transform:scale(1.07); }
+
+/* Cada serviço mexe do seu jeito: o chuveiro pinga, a tesoura
+   corta, a máquina vibra, a gota pulsa, a escova varre e a
+   gravata balança. Toca uma vez quando o cartão aparece na
+   rolagem e de novo a cada passada do mouse, porque no celular
+   não existe passar o mouse.                                  */
+.card__icon.tocar svg{ animation:2s var(--ease-out) both; }
+.card__icon[data-ico="banho"].tocar svg{ animation-name:ico-pinga; animation-duration:1.4s; }
+.card__icon[data-ico="tesoura"].tocar svg{ animation-name:ico-corta; animation-duration:1s; }
+.card__icon[data-ico="maquina"].tocar svg{ animation-name:ico-vibra; animation-duration:.7s; }
+.card__icon[data-ico="gota"].tocar svg{ animation-name:ico-pulsa; animation-duration:1.1s; }
+.card__icon[data-ico="escova"].tocar svg{ animation-name:ico-varre; animation-duration:1s; }
+.card__icon[data-ico="laco"].tocar svg{ animation-name:ico-balanca; animation-duration:1.1s; }
+
+@keyframes ico-pinga{
+  0%,100%{ transform:translateY(0) scaleY(1); }
+  35%    { transform:translateY(-2px) scaleY(.94); }
+  65%    { transform:translateY(3px) scaleY(1.06); }
+  85%    { transform:translateY(0) scaleY(.98); }
+}
+@keyframes ico-corta{
+  0%,100%{ transform:rotate(0); }
+  25%    { transform:rotate(-15deg); }
+  55%    { transform:rotate(9deg); }
+  80%    { transform:rotate(-4deg); }
+}
+@keyframes ico-vibra{
+  0%,100%{ transform:translateX(0); }
+  15%,45%,75%{ transform:translateX(-1.6px); }
+  30%,60%,90%{ transform:translateX(1.6px); }
+}
+@keyframes ico-pulsa{
+  0%,100%{ transform:scale(1); }
+  30%    { transform:scale(1.2); }
+  60%    { transform:scale(.93); }
+}
+@keyframes ico-varre{
+  0%,100%{ transform:translateX(0) rotate(0); }
+  30%    { transform:translateX(-3.5px) rotate(-7deg); }
+  65%    { transform:translateX(3.5px) rotate(7deg); }
+}
+@keyframes ico-balanca{
+  0%,100%{ transform:rotate(0); }
+  25%    { transform:rotate(-12deg); }
+  55%    { transform:rotate(10deg); }
+  80%    { transform:rotate(-5deg); }
+}
 .card__title{ font-size:1.28rem; font-weight:800; margin-bottom:.6rem; letter-spacing:-.012em; }
 .card p{ color:var(--muted); font-size:.985rem; }
 
@@ -864,44 +911,136 @@ legend{ padding:0; }
 .como__palco .disc__ring{ color:rgba(229,164,0,.55); }
 .como__palco .disc__plate{ box-shadow:0 34px 70px -30px rgba(15,42,74,.5); }
 
-/* ── depoimentos ───────────────────────────────────────── */
-.sec__head--centro{ margin-inline:auto; text-align:center; }
-.sec__foot--centro{ text-align:center; }
-.depos{
-  display:grid; gap:1.15rem;
-  grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));
+/* ── avaliações ─────────────────────────────────────────
+   São só três, e todas verdadeiras. Em vez de espalhar as
+   três em cartõezinhos iguais, a nota fica num painel só
+   dela e as falas passam uma de cada vez, com espaço para
+   serem lidas.                                              */
+.prova{
+  display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+  gap:clamp(1.5rem,3.5vw,2.6rem); align-items:stretch;
 }
-.depo{
-  /* as três colunas terminam na mesma linha: a assinatura
-     desce para o rodapé do cartão, não fica pendurada onde
-     o texto acabou */
-  position:relative; display:grid; gap:.9rem;
-  grid-template-rows:auto 1fr auto; height:100%;
-  background:var(--white); border-radius:var(--r-lg);
-  padding:1.75rem 1.6rem 1.5rem;
-  box-shadow:var(--shadow-sm);
-  transition:transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
+
+.nota-card{
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column; align-items:flex-start;
+  background:
+    radial-gradient(120% 90% at 85% 8%, rgba(255,194,14,.2), transparent 58%),
+    var(--navy);
+  color:var(--white);
+  border-radius:var(--r-lg);
+  padding:clamp(1.8rem,3.4vw,2.6rem);
 }
-.depo:hover{ transform:translateY(-5px); box-shadow:var(--shadow-md); }
-.depo__estrelas{ color:var(--yellow-deep); font-size:.95rem; letter-spacing:.1em; }
-.depo blockquote{
-  margin:0; color:var(--ink); font-size:.99rem; line-height:1.6;
-}
-.depo::before{
-  content:"”"; position:absolute; top:.35rem; right:1.1rem;
+.nota-card .eyebrow{ color:var(--yellow); margin-bottom:1rem; }
+.nota-card__titulo{
   font-family:Archivo,system-ui,sans-serif; font-stretch:112%;
-  font-size:4.5rem; font-weight:900; line-height:1;
-  color:var(--yellow); opacity:.22; pointer-events:none;
+  font-size:clamp(1.7rem,1.2rem + 1.5vw,2.4rem); font-weight:900;
+  letter-spacing:-.02em; line-height:1.08; margin-bottom:1.6rem;
 }
-.depo__quem{
-  display:grid; gap:.1rem; padding-top:.9rem;
-  border-top:1px solid rgba(15,42,74,.1);
+.nota-card__score{
+  display:flex; align-items:center; gap:1rem;
+  padding:1rem 0 1.2rem; margin-bottom:1.2rem;
+  border-bottom:1px solid rgba(255,255,255,.16);
+  width:100%;
 }
-.depo__quem b{
+.nota-card__score strong{
+  font-family:Archivo,system-ui,sans-serif; font-stretch:118%;
+  font-size:clamp(3.4rem,2.4rem + 3vw,4.6rem); font-weight:900;
+  line-height:.85; color:var(--yellow);
+}
+.nota-card__estrelas{
+  display:block; color:var(--yellow); font-size:1.15rem; letter-spacing:.12em;
+}
+.nota-card__base{ font-size:.88rem; color:#C9DBEC; }
+.nota-card__txt{ font-size:.94rem; color:#C9DBEC; margin-bottom:1.8rem; }
+.nota-card .btn{ margin-top:auto; }
+
+/* a pata gigante ao fundo, cortada pela borda do painel */
+.nota-card::after{
+  content:""; position:absolute; right:-58px; bottom:-70px;
+  width:230px; height:230px;
+  background:var(--yellow); opacity:.045;
+  -webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='black'><ellipse cx='28' cy='42' rx='9' ry='12'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>") center/contain no-repeat;
+          mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='black'><ellipse cx='28' cy='42' rx='9' ry='12'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>") center/contain no-repeat;
+  pointer-events:none;
+}
+
+/* ── o carrossel das falas ─────────────────────────────── */
+.carrossel{
+  position:relative; display:flex; flex-direction:column;
+  background:var(--white); border-radius:var(--r-lg);
+  padding:clamp(1.8rem,3.4vw,2.8rem);
+  box-shadow:var(--shadow-sm);
+}
+.carrossel__aspas{
+  position:absolute; top:.1rem; right:1.6rem;
+  font-family:Archivo,system-ui,sans-serif; font-stretch:112%;
+  font-size:7rem; font-weight:900; line-height:1;
+  color:var(--yellow); opacity:.2; pointer-events:none;
+}
+
+/* as falas ficam empilhadas no mesmo lugar: a altura do palco
+   é a da maior delas, então trocar de fala não faz a página
+   pular */
+.carrossel__palco{ display:grid; flex:1; }
+.fala{
+  grid-area:1 / 1; align-self:start;
+  opacity:0; visibility:hidden; transform:translateY(14px);
+  transition:opacity .5s var(--ease-suave), transform .5s var(--ease-suave), visibility .5s;
+}
+.fala.is-on{ opacity:1; visibility:visible; transform:none; }
+.fala__texto{
+  font-size:clamp(1.05rem,.98rem + .5vw,1.32rem); line-height:1.6;
+  color:var(--ink); margin-bottom:1.8rem;
+}
+.fala__quem{
+  display:flex; align-items:center; gap:.85rem;
+  padding-top:1.1rem; border-top:1px solid rgba(15,42,74,.1);
+}
+.fala__inicial{
+  width:42px; height:42px; border-radius:50%; flex:none;
+  display:grid; place-items:center;
+  background:var(--yellow); color:var(--navy);
+  font-family:Archivo,system-ui,sans-serif; font-stretch:110%;
+  font-size:1.15rem; font-weight:900;
+}
+.fala__quem b{
+  display:block;
   font-family:Archivo,system-ui,sans-serif; font-stretch:106%;
-  font-size:.95rem; font-weight:800;
+  font-size:.98rem; font-weight:800;
 }
-.depo__quem span{ font-size:.8rem; color:var(--muted); }
+.fala__quem i{ font-style:normal; font-size:.8rem; color:var(--muted); }
+.fala__estrelas{ margin-left:auto; color:var(--yellow-deep); letter-spacing:.08em; }
+
+.carrossel__barra{
+  display:flex; align-items:center; gap:1rem;
+  margin-top:1.8rem; padding-top:1.2rem;
+  border-top:1px solid rgba(15,42,74,.08);
+}
+.carrossel__pontos{ display:flex; gap:.5rem; }
+.ponto{
+  width:26px; height:5px; border:0; padding:0; border-radius:100px;
+  background:rgba(15,42,74,.16); cursor:pointer;
+  transition:background-color .3s var(--ease), width .35s var(--ease);
+}
+.ponto:hover{ background:rgba(15,42,74,.3); }
+.ponto.is-on{ width:40px; background:var(--yellow-deep); }
+
+.carrossel__setas{ display:flex; gap:.5rem; margin-left:auto; }
+.carrossel__setas button{
+  width:40px; height:40px; border-radius:50%; cursor:pointer;
+  border:1.5px solid rgba(15,42,74,.14); background:transparent;
+  display:grid; place-items:center;
+  transition:background-color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+}
+.carrossel__setas button:hover{
+  background:var(--yellow); border-color:var(--yellow); transform:translateY(-2px);
+}
+.carrossel__setas svg{ width:20px; height:20px; fill:var(--navy); }
+
+@media (max-width:860px){
+  .prova{ grid-template-columns:1fr; }
+}
 
 /* ── animações ─────────────────────────────────────────── */
 @keyframes rise{ from{ opacity:0; transform:translate3d(0,20px,0); } to{ opacity:1; transform:none; } }
@@ -1017,6 +1156,7 @@ html.js .reveal.vai-animar{ will-change:opacity,transform,filter; }
     transition-duration:.001ms !important;
   }
   .load{ opacity:1; transform:none; }
+  .card__icon.tocar svg{ animation:none; }
   html.js .reveal,
   html.js .reveal--img{ opacity:1; transform:none; filter:none; clip-path:none; will-change:auto; }
   .trilha svg,.rodape__patas svg{ opacity:var(--op,.12); transform:none; }

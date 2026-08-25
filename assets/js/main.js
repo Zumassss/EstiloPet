@@ -429,3 +429,102 @@ atualizarPreview();
     ).observe(filme);
   }
 })();
+
+
+/* ── carrossel das avaliações ──────────────────────────────
+   São três falas verdadeiras, uma de cada vez. Ela troca
+   sozinha, mas para assim que alguém encosta: ninguém quer
+   perder o texto no meio da leitura.                        */
+(() => {
+  const caixa = $("#carrossel");
+  if (!caixa) return;
+
+  const falas = $$(".fala", caixa);
+  const pontos = $$(".ponto", caixa);
+  if (falas.length < 2) return;
+
+  const TROCA = 7000;
+  let atual = 0;
+  let timer = null;
+  let parado = false;
+
+  function mostrar(i) {
+    atual = (i + falas.length) % falas.length;
+    falas.forEach((f, n) => {
+      const ligada = n === atual;
+      f.classList.toggle("is-on", ligada);
+      // a fala escondida sai do alcance do leitor de tela e do Tab
+      f.setAttribute("aria-hidden", ligada ? "false" : "true");
+    });
+    pontos.forEach((p, n) => {
+      p.classList.toggle("is-on", n === atual);
+      p.setAttribute("aria-current", n === atual ? "true" : "false");
+    });
+  }
+
+  function andar(passo) { mostrar(atual + passo); reprogramar(); }
+
+  function reprogramar() {
+    clearInterval(timer);
+    if (parado || querMenosMovimento.matches) return;
+    timer = setInterval(() => { if (!document.hidden) mostrar(atual + 1); }, TROCA);
+  }
+
+  $("#fala-antes").addEventListener("click", () => andar(-1));
+  $("#fala-depois").addEventListener("click", () => andar(1));
+  pontos.forEach((p) => p.addEventListener("click", () => {
+    mostrar(Number(p.dataset.ir)); reprogramar();
+  }));
+
+  // parar de trocar enquanto a pessoa está ali
+  ["mouseenter", "focusin"].forEach((ev) =>
+    caixa.addEventListener(ev, () => { parado = true; reprogramar(); }));
+  ["mouseleave", "focusout"].forEach((ev) =>
+    caixa.addEventListener(ev, () => { parado = false; reprogramar(); }));
+
+  // setas do teclado, quando o foco está no carrossel
+  caixa.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { e.preventDefault(); andar(-1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); andar(1); }
+  });
+
+  querMenosMovimento.addEventListener("change", reprogramar);
+  mostrar(0);
+  reprogramar();
+})();
+
+
+/* ── os ícones dos serviços ────────────────────────────────
+   A classe é tirada quando a animação acaba, e é isso que
+   permite tocar de novo: recolocá-la reinicia a animação.   */
+(() => {
+  const icones = $$(".card__icon");
+  if (!icones.length || querMenosMovimento.matches) return;
+
+  const tocar = (ico) => {
+    if (ico.classList.contains("tocar")) return;   // já está mexendo
+    ico.classList.add("tocar");
+  };
+
+  icones.forEach((ico) => {
+    ico.addEventListener("animationend", () => ico.classList.remove("tocar"));
+    const cartao = ico.closest(".card");
+    cartao.addEventListener("pointerenter", () => tocar(ico));
+    cartao.addEventListener("focusin", () => tocar(ico));
+  });
+
+  // no celular não existe passar o mouse: toca uma vez quando
+  // o cartão entra na tela
+  if ("IntersectionObserver" in window) {
+    const olho = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => {
+        if (!e.isIntersecting) return;
+        // espera a revelação do cartão terminar, senão as duas
+        // animações brigam pelo mesmo elemento
+        setTimeout(() => tocar(e.target), 420);
+        olho.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    icones.forEach((ico) => olho.observe(ico));
+  }
+})();
