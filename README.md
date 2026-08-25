@@ -109,8 +109,15 @@ de quem visita para servidores do Google — o que ajuda do ponto de vista da LG
 
 ## Painel interno
 
-Endereço: **`/painel.html`** — senha inicial `estilopet`.
-Não há link para ele no site público, e o `robots.txt` pede aos buscadores para ignorá-lo.
+Endereço: **`/painel`** — senha inicial `estilopet`.
+No ar: <https://estilopet-beryl.vercel.app/painel>
+
+Não há link para ele no site público, o `robots.txt` pede aos buscadores para
+ignorá-lo e o `vercel.json` ainda manda um cabeçalho `X-Robots-Tag: noindex`
+nessa página.
+
+O `vercel.json` também liga o `cleanUrls`, que é o que faz `/painel` funcionar
+sem o `.html` no fim (e `/painel.html` redirecionar para lá).
 
 ### De onde vêm os números
 
