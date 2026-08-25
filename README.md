@@ -80,7 +80,9 @@ assets/
 
 As oito imagens enviadas eram capturas de tela do Instagram. Recortei a
 interface do app e do celular, e gerei versões `.webp` (com `.jpg` de reserva)
-em dois tamanhos cada, para o navegador baixar só o que precisa.
+em dois tamanhos cada, para o navegador baixar só o que precisa. Numa delas
+sobrou o contador "2/3" do carrossel no canto; a parede atrás dele é lisa, então
+foi possível reconstruir o pedaço a partir do que estava em volta.
 
 Para trocar ou acrescentar uma foto no mural: exporte em 4:5 (ex.: 800×1000),
 salve em `assets/img/` e copie um dos blocos `<li class="star">` no `index.html`.
@@ -229,15 +231,21 @@ site trata as fotos do mesmo jeito.
 cursor no primeiro campo. O botão verde flutuante vai direto para a conversa,
 com uma mensagem dizendo que a pessoa veio pelo site.
 
-**O topo.** Um loop de 10 segundos de um banho de verdade, em quadro vertical.
-O arquivo original tinha 28 MB em 4K; ele é exibido no máximo a 340px de largura,
-então foi reduzido a 640×1138 e ficou em 891 KB. O corte tem um cruzamento de um
-segundo entre o fim e o começo, para o loop emendar sem salto.
+**O topo.** Um loop de 10 segundos de um banho de verdade, ocupando a metade
+direita do topo como plano de fundo. Para não ficar a tela partida ao meio, com o
+vídeo de um lado e o texto do outro, o azul-marinho entra por cima em degradê e
+vai sumindo para a direita: o filme dissolve no fundo em vez de terminar numa
+linha reta.
+
+O arquivo original tinha 28 MB em 4K; ele é recortado em 2:3, reduzido a 900×1350
+e fica em 1,1 MB. O corte tem um cruzamento de um segundo entre o fim e o começo,
+para o loop emendar sem salto.
 
 Nada é baixado pelo HTML: o `<video>` nasce sem fonte, mostrando só o pôster, e o
 JavaScript decide se vale a pena carregar. Não carrega para quem ativou economia
-de dados, está em rede 2G ou pediu menos movimento — nesses casos o pôster já
-conta a história. No celular vem o arquivo de 385 KB. Fora da tela, o vídeo pausa.
+de dados, está em rede 2G ou pediu menos movimento, e nesses casos o pôster já
+conta a história. No celular vem o arquivo de 590 KB, e o azul cobre mais, porque
+ali o texto fica por cima do vídeo. Fora da tela, o vídeo pausa.
 
 **O disco girando** saiu do topo e foi para o "Como funciona", que era a seção
 mais fraca do site: os três passos viraram uma lista numerada à esquerda, com o

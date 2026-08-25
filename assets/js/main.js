@@ -376,18 +376,26 @@ window.Dados?.esvaziarFila();
 atualizarPreview();
 
 
-/* ── vídeo do topo ─────────────────────────────────────────
+/* ── filme ao fundo do topo ────────────────────────────────
    Nada é baixado pelo HTML: o <video> nasce com preload="none"
    e sem fonte, mostrando só o pôster. O arquivo só entra em
-   cena se valer a pena — e o menor deles em tela pequena.    */
+   cena se valer a pena, e o menor deles em tela pequena.     */
 (() => {
   const filme = document.getElementById("filme");
   if (!filme) return;
+  const fundo = filme.parentElement;
 
   const rede = navigator.connection || {};
   const economia = rede.saveData === true;
   const redeLenta = /(^|-)2g$/.test(rede.effectiveType || "");
   const menosMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const telaPequena = matchMedia("(max-width: 720px)").matches;
+
+  // o pôster também é o fundo da camada: enquanto o vídeo não
+  // chega (ou quando nem vai chegar) a imagem já segura a cena
+  const poster = telaPequena ? "assets/img/bgposter-sm.jpg" : "assets/img/bgposter.jpg";
+  fundo.style.backgroundImage = `url("${poster}")`;
+  filme.poster = poster;
 
   // em qualquer um desses casos o pôster já conta a história
   if (economia || redeLenta || menosMovimento) return;
@@ -395,8 +403,7 @@ atualizarPreview();
   // MP4 primeiro: é o menor e o que roda em todo navegador de verdade.
   // O WebM existe para builds sem H.264 (Chromium e Firefox de algumas
   // distribuições Linux), que senão ficariam só no pôster.
-  const telaPequena = matchMedia("(max-width: 720px)").matches;
-  const base = telaPequena ? "assets/video/banho-sm" : "assets/video/banho";
+  const base = telaPequena ? "assets/video/bg-sm" : "assets/video/bg";
   [["mp4", "video/mp4"], ["webm", "video/webm"]].forEach(([ext, tipo]) => {
     const fonte = document.createElement("source");
     fonte.src = `${base}.${ext}`;
@@ -406,14 +413,14 @@ atualizarPreview();
   filme.preload = "auto";
 
   const tocar = () => filme.play().catch(() => {});   // se o navegador barrar, fica o pôster
-  filme.addEventListener("canplay", tocar, { once: true });
+  filme.addEventListener("canplay", () => { filme.classList.add("is-pronto"); tocar(); }, { once: true });
   filme.load();
 
   // fora da tela, não gasta bateria
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(
       (entradas) => entradas.forEach((e) => (e.isIntersecting ? tocar() : filme.pause())),
-      { threshold: 0.12 }
+      { threshold: 0.05 }
     ).observe(filme);
   }
 })();

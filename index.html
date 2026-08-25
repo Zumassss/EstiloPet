@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EstiloPet — Estética Animal | Banho, tosa e hidratação com hora marcada</title>
+<title>EstiloPet Estética Animal | Banho, tosa e hidratação com hora marcada</title>
 <meta name="description" content="EstiloPet Estética Animal: banho, tosa na tesoura, hidratação e cuidados finais com hora marcada. Monte seu agendamento e envie direto no WhatsApp.">
 <meta name="theme-color" content="#0F2A4A">
 <link rel="canonical" href="https://estilopet.com.br/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="EstiloPet — Estética Animal">
+<meta property="og:title" content="EstiloPet Estética Animal">
 <meta property="og:description" content="Banho, tosa e hidratação com hora marcada. Agende pelo WhatsApp.">
 <meta property="og:image" content="assets/img/og.jpg">
 <meta property="og:locale" content="pt_BR">
@@ -47,7 +47,7 @@
 
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
-    <a class="logo" href="#topo" aria-label="EstiloPet, estética animal — início">
+    <a class="logo" href="#topo" aria-label="EstiloPet, estética animal, início">
       <span class="logo__mark">
         <span class="logo__word">ESTIL</span>
         <span class="logo__disc"><svg class="logo__paw"><use href="#paw"/></svg></span>
@@ -91,6 +91,15 @@
 
 <!-- ══ HERO ══ -->
 <section class="hero" id="topo">
+  <!-- o filme é o fundo da metade direita; o azul se esvai por cima dele -->
+  <div class="hero__fundo" aria-hidden="true">
+    <video class="hero__video" id="filme"
+           poster="assets/img/bgposter.jpg"
+           muted loop playsinline preload="none"
+           width="900" height="1350"></video>
+    <span class="hero__veu"></span>
+  </div>
+
   <div class="hero__paws" aria-hidden="true">
     <svg class="drift drift--1"><use href="#paw"/></svg>
     <svg class="drift drift--2"><use href="#paw"/></svg>
@@ -133,24 +142,12 @@
         </ul>
       </div>
     </div>
-
-    <div class="hero__palco load load--video" style="--d:220ms">
-      <div class="filme">
-        <div class="filme__moldura">
-          <video class="filme__video" id="filme"
-                 poster="assets/img/banho-poster.jpg"
-                 muted loop playsinline preload="none"
-                 aria-label="Yorkshire tomando banho na EstiloPet"
-                 width="640" height="1138"></video>
-          <span class="filme__brilho" aria-hidden="true"></span>
-        </div>
-        <span class="filme__selo">
-          <span class="filme__pulso" aria-hidden="true"></span>
-          Aqui dentro, agora há pouco
-        </span>
-      </div>
-    </div>
   </div>
+
+  <span class="hero__selo load" style="--d:620ms">
+    <span class="hero__pulso" aria-hidden="true"></span>
+    Aqui dentro, agora há pouco
+  </span>
 </section>
 
 <!-- ══ LETREIRO ══ -->
@@ -239,7 +236,7 @@
       <h2 class="sec__title">Quem já passou pela parede amarela</h2>
       <p class="sec__lead">
         Toda vez que um pet fica pronto, ele posa na nossa parede. Estes são clientes de
-        verdade, saindo do banho — sem filtro e sem produção.
+        verdade, saindo do banho, sem filtro e sem produção.
       </p>
     </header>
 
@@ -296,7 +293,7 @@
     </ul>
 
     <p class="sec__foot sec__foot--light reveal">
-      Tem mais no Instagram —
+      Tem mais no Instagram:
       <a href="https://instagram.com/estilopet.es" target="_blank" rel="noopener">@estilopet.es</a>
     </p>
   </div>
@@ -323,7 +320,7 @@
           <span class="passo__num">2</span>
           <div>
             <h3 class="passo__titulo">A gente cuida</h3>
-            <p>Seu pet é atendido na hora marcada. Se aparecer algo fora do combinado — um nó difícil, uma irritação na pele — a gente avisa antes de fazer.</p>
+            <p>Seu pet é atendido na hora marcada. Se aparecer algo fora do combinado, como um nó difícil ou uma irritação na pele, a gente avisa antes de fazer.</p>
           </div>
         </li>
         <li class="passo reveal">
@@ -390,13 +387,13 @@
 
     <div class="sobre__copy">
       <p class="eyebrow reveal"><span class="eyebrow__dot"></span>Sobre nós</p>
-      <h2 class="sec__title reveal">Um salão feito para o pet ficar à vontade</h2>
+      <h2 class="sec__title reveal">Uma estética animal</h2>
 
       <!-- ATUALIZAR: confirme os detalhes deste texto com a equipe -->
       <p class="sobre__texto reveal">
         A EstiloPet é uma estética animal com espaço próprio, montada pensando em quem
         passa a manhã inteira aqui dentro. Ambiente climatizado, mesas com piso
-        antiderrapante e atendimento com hora marcada — porque cachorro esperando é
+        antiderrapante e atendimento com hora marcada, porque cachorro esperando é
         cachorro estressado, e pet estressado não sai bonito.
       </p>
       <p class="sobre__texto reveal">
@@ -472,7 +469,7 @@
       <p class="eyebrow eyebrow--dark reveal"><span class="eyebrow__dot"></span>Agendamento</p>
       <h2 class="sec__title reveal">Monte seu pedido e mande no WhatsApp</h2>
       <p class="sec__lead reveal">
-        Preencha os campos ao lado. A gente monta a mensagem pronta e abre a conversa —
+        Preencha os campos ao lado. A gente monta a mensagem pronta e abre a conversa,
         você só confere e envia. Nada é salvo neste site.
       </p>
 
@@ -609,7 +606,7 @@
       <li class="resumo__item reveal">
         <span class="resumo__ico"><svg viewBox="0 0 24 24"><use href="#ico-pin"/></svg></span>
         <span class="resumo__k">Endereço</span>
-        <span class="resumo__v" id="endereco">Av. Cel. Pedro Maia de Carvalho, 805 — Lj 4<br>Praia das Gaivotas, Vila Velha — ES</span>
+        <span class="resumo__v" id="endereco">Av. Cel. Pedro Maia de Carvalho, 805, Lj 4<br>Praia das Gaivotas, Vila Velha, ES</span>
         <a class="resumo__extra resumo__extra--link" id="link-mapa" target="_blank" rel="noopener">Abrir no Google Maps →</a>
       </li>
 
