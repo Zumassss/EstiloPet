@@ -306,11 +306,16 @@ const montarMensagem = (d) => {
 };
 
 const VAZIO = "Preencha o formulário para ver a mensagem.";
+const horaPreview = $("#preview-hora");
 
 const atualizarPreview = () => {
   const d = lerFormulario();
   const preenchido = d.tutor || d.pet || d.raca || d.servicos.length || d.dia || d.hora || d.obs;
   preview.textContent = preenchido ? montarMensagem(d) : VAZIO;
+  if (horaPreview) {
+    // a hora do balão é a de agora: a mensagem sai neste instante
+    horaPreview.textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  }
 };
 
 const erro = (campo, texto) => {

@@ -227,6 +227,16 @@ moldura circular da foto principal e no card de contato. A ideia do site inteiro
 vem daí: a EstiloPet já trata cada cachorro como uma estrela de retrato, então o
 site trata as fotos do mesmo jeito.
 
+**A conversa.** Ao lado do formulário fica a janela do WhatsApp como ela vai
+aparecer: cabeçalho com o nome da loja, uma mensagem de recepção e o balão verde
+que se reescreve a cada campo preenchido. Antes ali havia só um balão solto num
+espaço vazio, e não ficava claro de onde a mensagem vinha. Em tela estreita a
+conversa desce para depois do formulário, que é onde ela faz sentido.
+
+**Ícones.** Cada serviço tem o seu (chuveiro, tesoura, máquina, gota, escova,
+gravata), desenhados à mão em SVG. Repetir a mesma patinha nos seis cartões era
+o que mais entregava molde pronto na página.
+
 **Botões.** Os botões "Agendar no WhatsApp" levam ao formulário e já deixam o
 cursor no primeiro campo. O botão verde flutuante vai direto para a conversa,
 com uma mensagem dizendo que a pessoa veio pelo site.

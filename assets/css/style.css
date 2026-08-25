@@ -221,7 +221,7 @@ legend{ padding:0; }
    e a área de texto do outro.                                */
 .hero__fundo{
   position:absolute; inset:0 0 0 auto;
-  width:clamp(46%,54%,60%); z-index:0; pointer-events:none;
+  width:clamp(50%,58%,64%); z-index:0; pointer-events:none;
 }
 .hero__video{
   width:100%; height:100%; object-fit:cover; display:block;
@@ -237,15 +237,15 @@ legend{ padding:0; }
        ralo já na metade do vídeo */
     linear-gradient(to right,
       var(--navy) 0%,
-      rgba(15,42,74,.97) 16%,
-      rgba(15,42,74,.82) 34%,
-      rgba(15,42,74,.46) 58%,
-      rgba(15,42,74,.18) 82%,
-      rgba(15,42,74,.08) 100%),
+      rgba(15,42,74,.94) 13%,
+      rgba(15,42,74,.62) 30%,
+      rgba(15,42,74,.28) 52%,
+      rgba(15,42,74,.08) 78%,
+      rgba(15,42,74,.02) 100%),
     /* e um pouco por cima e por baixo, para o filme não bater
        seco nas bordas da seção */
     linear-gradient(to bottom,
-      rgba(15,42,74,.55), transparent 26%, transparent 68%, rgba(15,42,74,.62)),
+      rgba(15,42,74,.4), transparent 22%, transparent 72%, rgba(15,42,74,.48)),
     /* o amarelo da casa, de leve, para o quadro não ficar frio */
     radial-gradient(70% 55% at 76% 22%, rgba(255,194,14,.14), transparent 62%);
 }
@@ -473,30 +473,81 @@ legend{ padding:0; }
     var(--navy);
 }
 .booking > *{ min-width:0; }
-.booking{ display:grid; grid-template-columns:.95fr 1.05fr; gap:clamp(2rem,5vw,4rem); align-items:start; }
+.booking{
+  display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
+  grid-template-areas:"intro form" "conversa form";
+  grid-template-rows:auto 1fr;
+  column-gap:clamp(2rem,5vw,4rem); row-gap:0; align-items:start;
+}
+.booking__intro{ grid-area:intro; }
+.form{ grid-area:form; }
+.conversa{ grid-area:conversa; }
 .booking__intro .sec__title{ margin-bottom:1rem; }
 
-/* balão de pré-visualização — parece a mensagem que vai sair */
-.preview{ margin-top:2rem; }
-.preview__label{
-  font-family:Archivo,system-ui,sans-serif; font-stretch:100%;
-  font-size:.68rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase;
-  color:var(--muted-light); margin-bottom:.75rem;
-}
-.preview__text{
-  position:relative; margin:0;
-  background:var(--white); color:var(--ink);
-  border-radius:var(--r-md) var(--r-md) var(--r-md) 4px;
-  padding:1.1rem 1.25rem;
-  font-family:inherit; font-size:.94rem; line-height:1.6;
-  white-space:pre-wrap; word-break:break-word;
+/* ── a conversa: a mensagem como ela vai chegar ──────────
+   O espaço ao lado do formulário estava vazio e o balão
+   solto não dizia de onde vinha. Mostrando a janela inteira,
+   fica claro o que acontece ao clicar em enviar.            */
+.conversa{
+  margin-top:2.2rem;
+  border-radius:var(--r-lg); overflow:hidden;
+  background:var(--white);
   box-shadow:var(--shadow-lg);
+  border:1px solid rgba(15,42,74,.07);
 }
-.preview__text::after{
-  content:""; position:absolute; left:-9px; bottom:0;
-  border:10px solid transparent;
-  border-right-color:var(--white); border-bottom-color:var(--white);
+.conversa__topo{
+  display:flex; align-items:center; gap:.8rem;
+  background:var(--navy); color:var(--white);
+  padding:.85rem 1.1rem;
 }
+.conversa__topo b{ display:block; font-size:.92rem; font-weight:700; }
+.conversa__topo span{ font-size:.76rem; color:#9FE7B8; }
+.conversa__foto{
+  width:38px; height:38px; border-radius:50%; flex:none;
+  background:var(--yellow); display:grid; place-items:center;
+}
+.conversa__foto svg{ width:21px; height:21px; fill:var(--navy); }
+.conversa__zap{ width:20px; height:20px; fill:#25D366; margin-left:auto; flex:none; }
+
+.conversa__corpo{
+  padding:1.15rem 1rem 1.35rem;
+  display:grid; gap:.7rem;
+  background:#EFE9E0;
+  /* o fundo salpicado de patinhas, bem de leve, como o papel
+     de parede da conversa */
+  background-image:
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%230F2A4A' opacity='.06' transform='rotate(-14 50 50)'><ellipse cx='28' cy='42' rx='9' ry='12'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>"),
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%230F2A4A' opacity='.06' transform='rotate(-14 50 50)'><ellipse cx='28' cy='42' rx='9' ry='12'/><ellipse cx='43' cy='31' rx='9' ry='12.5'/><ellipse cx='60' cy='31' rx='9' ry='12.5'/><ellipse cx='75' cy='42' rx='9' ry='12'/><path d='M51 49c12 0 23 8 26 18 3 10-7 17-18 17-4 0-5-1-8-1s-4 1-8 1c-11 0-21-7-18-17 3-10 14-18 26-18Z'/></g></svg>");
+  background-size:104px 104px, 68px 68px;
+  background-position:0 0, 46px 33px;
+}
+.balao{
+  position:relative; max-width:88%;
+  padding:.7rem .85rem 1.3rem;
+  border-radius:12px; font-size:.92rem; line-height:1.55;
+  box-shadow:0 1px 1px rgba(0,0,0,.13);
+}
+.balao--deles{ background:var(--white); color:var(--ink); border-top-left-radius:3px; }
+.balao--seu{ background:#D9FDD3; color:#0B2211; margin-left:auto; border-top-right-radius:3px; }
+.balao--seu pre{
+  margin:0; font-family:inherit; font-size:inherit; line-height:inherit;
+  white-space:pre-wrap; word-break:break-word;
+}
+.balao__hora{
+  position:absolute; right:.7rem; bottom:.42rem;
+  display:inline-flex; align-items:center; gap:.25rem;
+  font-size:.67rem; color:rgba(11,34,17,.45);
+}
+.balao__hora i{ font-style:normal; }
+.balao__hora svg{ width:14px; height:9px; fill:#53BDEB; }
+.balao--deles .balao__hora{ color:rgba(15,42,74,.4); }
+
+.conversa__nota{
+  margin:0; padding:.8rem 1.1rem;
+  font-size:.8rem; color:var(--muted);
+  border-top:1px solid rgba(15,42,74,.08);
+}
+
 
 .form > *{ min-width:0; }
 .form{
@@ -735,12 +786,6 @@ legend{ padding:0; }
     radial-gradient(75% 60% at 95% 4%, rgba(255,194,14,.16), transparent 58%),
     var(--porcelain);
 }
-.sec--form .preview__label{ color:var(--muted); }
-.sec--form .preview__text{
-  border:1px solid rgba(15,42,74,.1);
-  box-shadow:var(--shadow-md);
-}
-.sec--form .preview__text::after{ border-right-color:var(--white); border-bottom-color:var(--white); }
 .sec--form .form{
   background:var(--navy);
   border-color:var(--navy-line);
@@ -827,7 +872,11 @@ legend{ padding:0; }
   grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));
 }
 .depo{
-  position:relative; display:grid; gap:.9rem; align-content:start;
+  /* as três colunas terminam na mesma linha: a assinatura
+     desce para o rodapé do cartão, não fica pendurada onde
+     o texto acabou */
+  position:relative; display:grid; gap:.9rem;
+  grid-template-rows:auto 1fr auto; height:100%;
   background:var(--white); border-radius:var(--r-lg);
   padding:1.75rem 1.6rem 1.5rem;
   box-shadow:var(--shadow-sm);
@@ -909,7 +958,13 @@ html.js .reveal.vai-animar{ will-change:opacity,transform,filter; }
   .hero__inner{ grid-template-columns:1fr; text-align:left; }
   .hero__stage{ order:-1; }
   .disc{ width:min(78%,340px); }
-  .booking{ grid-template-columns:1fr; }
+  /* em coluna única a conversa vai para depois do formulário:
+     ela mostra o resultado do que a pessoa acabou de preencher */
+  .booking{
+    grid-template-columns:1fr;
+    grid-template-areas:"intro" "form" "conversa";
+    grid-template-rows:auto auto auto; row-gap:clamp(2rem,5vw,3rem);
+  }
 
   /* sem espaço para duas colunas, o filme vira fundo da seção
      inteira e o azul cobre mais, para o texto continuar legível */
@@ -918,8 +973,8 @@ html.js .reveal.vai-animar{ will-change:opacity,transform,filter; }
   .hero__veu{
     background:
       linear-gradient(to bottom,
-        rgba(15,42,74,.9) 0%, rgba(15,42,74,.8) 42%,
-        rgba(15,42,74,.62) 72%, rgba(15,42,74,.86) 100%),
+        rgba(15,42,74,.86) 0%, rgba(15,42,74,.74) 42%,
+        rgba(15,42,74,.54) 72%, rgba(15,42,74,.82) 100%),
       linear-gradient(to right, var(--navy) 0%, rgba(15,42,74,.35) 78%, rgba(15,42,74,.3) 100%),
       radial-gradient(70% 55% at 76% 18%, rgba(255,194,14,.13), transparent 62%);
   }
